@@ -174,8 +174,9 @@ const WASM_OPCODE_F64_REINTERPRET_I64: byte = 179;
 const WASM_OPCODE_I32_REINTERPRET_F32: byte = 180;
 const WASM_OPCODE_I64_REINTERPRET_F64: byte = 181;
 
-const WASM_MAGIC = '\0' | 'a' << 8 | 's' << 16 | 'm' << 24;
-const WASM_VERSION = 10;
+// const WASM_MAGIC = '\0' | 'a' << 8 | 's' << 16 | 'm' << 24;
+const WASM_MAGIC = 0x6d736100;
+const WASM_VERSION = 0x0d;
 const WASM_SIZE_IN_PAGES = 256;
 const WASM_MEMORY_INITIALIZER_BASE = 8; // Leave space for "null"
 

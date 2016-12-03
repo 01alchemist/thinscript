@@ -150,7 +150,7 @@ function loadWebAssembly(callback) {
 
 function compileWebAssembly(code) {
   var stdlib = loadStdlibForWebAssembly();
-  var module = Wasm.instantiateModule(code, {global: stdlib});
+  var module = Wasm.Module(code, {global: stdlib});
   var exports = module.exports;
   var memory = exports.memory;
   stdlib.exports = exports;
