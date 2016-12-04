@@ -7807,727 +7807,6 @@
     this.maxAlignment = maxAlignment;
   };
 
-  function TurboJsResult() {
-    this.context = null;
-    this.code = null;
-    this.indent = 0;
-    this.foundMultiply = false;
-    this.previousNode = null;
-  }
-
-  TurboJsResult.prototype.emitIndent = function() {
-    var i = this.indent;
-
-    while (i > 0) {
-      this.code.append("  ");
-      i = i - 1 | 0;
-    }
-  };
-
-  TurboJsResult.prototype.emitNewlineBefore = function(node) {
-    if (this.previousNode !== null && (!isCompactNodeKind(this.previousNode.kind) || !isCompactNodeKind(node.kind))) {
-      this.code.appendChar(10);
-    }
-
-    this.previousNode = null;
-  };
-
-  TurboJsResult.prototype.emitNewlineAfter = function(node) {
-    this.previousNode = node;
-  };
-
-  TurboJsResult.prototype.emitStatements = function(node) {
-    while (node !== null) {
-      this.emitStatement(node);
-      node = node.nextSibling;
-    }
-  };
-
-  TurboJsResult.prototype.emitBlock = function(node) {
-    this.previousNode = null;
-    this.code.append("{\n");
-    this.indent = this.indent + 1 | 0;
-    this.emitStatements(node.firstChild);
-    this.indent = this.indent - 1 | 0;
-    this.emitIndent();
-    this.code.appendChar(125);
-    this.previousNode = null;
-  };
-
-  TurboJsResult.prototype.emitUnary = function(node, parentPrecedence, operator) {
-    var isPostfix = isUnaryPostfix(node.kind);
-    var shouldCastToInt = node.kind === 40 && !jsKindCastsOperandsToInt(node.parent.kind);
-    var isUnsigned = node.isUnsignedOperator();
-    var operatorPrecedence = shouldCastToInt ? isUnsigned ? 9 : 4 : isPostfix ? 14 : 13;
-    var code = this.code;
-
-    if (parentPrecedence > operatorPrecedence) {
-      code.appendChar(40);
-    }
-
-    if (!isPostfix) {
-      code.append(operator);
-    }
-
-    this.emitExpression(node.unaryValue(), operatorPrecedence);
-
-    if (isPostfix) {
-      code.append(operator);
-    }
-
-    if (shouldCastToInt) {
-      code.append(isUnsigned ? " >>> 0" : " | 0");
-    }
-
-    if (parentPrecedence > operatorPrecedence) {
-      code.appendChar(41);
-    }
-  };
-
-  TurboJsResult.prototype.emitBinary = function(node, parentPrecedence, operator, operatorPrecedence, mode) {
-    var isRightAssociative = node.kind === 49;
-    var isUnsigned = node.isUnsignedOperator();
-    var code = this.code;
-    var shouldCastToInt = mode === 1 && (isUnsigned || !jsKindCastsOperandsToInt(node.parent.kind));
-    var selfPrecedence = shouldCastToInt ? isUnsigned ? 9 : 4 : parentPrecedence;
-
-    if (parentPrecedence > selfPrecedence) {
-      code.appendChar(40);
-    }
-
-    if (selfPrecedence > operatorPrecedence) {
-      code.appendChar(40);
-    }
-
-    this.emitExpression(node.binaryLeft(), isRightAssociative ? operatorPrecedence + 1 | 0 : operatorPrecedence);
-    code.append(operator);
-    this.emitExpression(node.binaryRight(), isRightAssociative ? operatorPrecedence : operatorPrecedence + 1 | 0);
-
-    if (selfPrecedence > operatorPrecedence) {
-      code.appendChar(41);
-    }
-
-    if (shouldCastToInt) {
-      code.append(isUnsigned ? " >>> 0" : " | 0");
-    }
-
-    if (parentPrecedence > selfPrecedence) {
-      code.appendChar(41);
-    }
-  };
-
-  TurboJsResult.prototype.emitCommaSeparatedExpressions = function(start, stop) {
-    while (start !== stop) {
-      this.emitExpression(start, 0);
-      start = start.nextSibling;
-
-      if (start !== stop) {
-        this.code.append(", ");
-      }
-    }
-  };
-
-  TurboJsResult.prototype.emitExpression = function(node, parentPrecedence) {
-    var code = this.code;
-
-    if (node.kind === 29) {
-      var symbol = node.symbol;
-
-      if (symbol.kind === 5 && symbol.node.isDeclare()) {
-        code.append("__declare.");
-      }
-
-      this.emitSymbolName(symbol);
-    }
-
-    else if (node.kind === 31) {
-      code.append("null");
-    }
-
-    else if (node.kind === 22) {
-      code.append(node.intValue !== 0 ? "true" : "false");
-    }
-
-    else if (node.kind === 28) {
-      if (parentPrecedence === 15) {
-        code.appendChar(40);
-      }
-
-      code.append(node.resolvedType.isUnsigned() ? (node.intValue >>> 0).toString() : node.intValue.toString());
-
-      if (parentPrecedence === 15) {
-        code.appendChar(41);
-      }
-    }
-
-    else if (node.kind === 34) {
-      StringBuilder_appendQuoted(code, node.stringValue);
-    }
-
-    else if (node.kind === 24) {
-      var context = this.context;
-      var value = node.castValue();
-      var from = value.resolvedType.underlyingType(context);
-      var type = node.resolvedType.underlyingType(context);
-      var fromSize = from.variableSizeOf(context);
-      var typeSize = type.variableSizeOf(context);
-
-      if (from === type || fromSize < typeSize) {
-        this.emitExpression(value, parentPrecedence);
-      }
-
-      else if (type === context.sbyteType || type === context.shortType) {
-        if (parentPrecedence > 9) {
-          code.appendChar(40);
-        }
-
-        var shift = (32 - (typeSize << 3) | 0).toString();
-        this.emitExpression(value, 9);
-        code.append(" << ");
-        code.append(shift);
-        code.append(" >> ");
-        code.append(shift);
-
-        if (parentPrecedence > 9) {
-          code.appendChar(41);
-        }
-      }
-
-      else if (type === context.byteType || type === context.ushortType) {
-        if (parentPrecedence > 6) {
-          code.appendChar(40);
-        }
-
-        this.emitExpression(value, 6);
-        code.append(" & ");
-        code.append(type.integerBitMask(context).toString());
-
-        if (parentPrecedence > 6) {
-          code.appendChar(41);
-        }
-      }
-
-      else if (type === context.intType) {
-        if (parentPrecedence > 4) {
-          code.appendChar(40);
-        }
-
-        this.emitExpression(value, 4);
-        code.append(" | 0");
-
-        if (parentPrecedence > 4) {
-          code.appendChar(41);
-        }
-      }
-
-      else if (type === context.uintType) {
-        if (parentPrecedence > 9) {
-          code.appendChar(40);
-        }
-
-        this.emitExpression(value, 9);
-        code.append(" >>> 0");
-
-        if (parentPrecedence > 9) {
-          code.appendChar(41);
-        }
-      }
-
-      else {
-        this.emitExpression(value, parentPrecedence);
-      }
-    }
-
-    else if (node.kind === 25) {
-      this.emitExpression(node.dotTarget(), 15);
-      code.appendChar(46);
-      this.emitSymbolName(node.symbol);
-    }
-
-    else if (node.kind === 26) {
-      if (parentPrecedence > 1) {
-        code.appendChar(40);
-      }
-
-      this.emitExpression(node.hookValue(), 2);
-      code.append(" ? ");
-      this.emitExpression(node.hookTrue(), 1);
-      code.append(" : ");
-      this.emitExpression(node.hookFalse(), 1);
-
-      if (parentPrecedence > 1) {
-        code.appendChar(41);
-      }
-    }
-
-    else if (node.kind === 27) {
-      var value = node.indexTarget();
-      this.emitExpression(value, 14);
-      code.appendChar(91);
-      this.emitCommaSeparatedExpressions(value.nextSibling, null);
-      code.appendChar(93);
-    }
-
-    else if (node.kind === 23) {
-      if (node.expandCallIntoOperatorTree()) {
-        this.emitExpression(node, parentPrecedence);
-      }
-
-      else {
-        var value = node.callValue();
-        this.emitExpression(value, 14);
-
-        if (value.symbol === null || !value.symbol.isGetter()) {
-          code.appendChar(40);
-          this.emitCommaSeparatedExpressions(value.nextSibling, null);
-          code.appendChar(41);
-        }
-      }
-    }
-
-    else if (node.kind === 30) {
-      code.append("new ");
-      this.emitExpression(node.newType(), 14);
-      code.append("()");
-    }
-
-    else if (node.kind === 41) {
-      var value = node.unaryValue();
-      value.expandCallIntoOperatorTree();
-      var invertedKind = invertedBinaryKind(value.kind);
-
-      if (invertedKind !== value.kind) {
-        value.kind = invertedKind;
-        this.emitExpression(value, parentPrecedence);
-      }
-
-      else {
-        this.emitUnary(node, parentPrecedence, "!");
-      }
-    }
-
-    else if (node.kind === 38) {
-      this.emitUnary(node, parentPrecedence, "~");
-    }
-
-    else if (node.kind === 40) {
-      this.emitUnary(node, parentPrecedence, "-");
-    }
-
-    else if (node.kind === 43) {
-      this.emitUnary(node, parentPrecedence, "+");
-    }
-
-    else if (node.kind === 47) {
-      this.emitUnary(node, parentPrecedence, "++");
-    }
-
-    else if (node.kind === 46) {
-      this.emitUnary(node, parentPrecedence, "--");
-    }
-
-    else if (node.kind === 45) {
-      this.emitUnary(node, parentPrecedence, "++");
-    }
-
-    else if (node.kind === 44) {
-      this.emitUnary(node, parentPrecedence, "--");
-    }
-
-    else if (node.kind === 48) {
-      this.emitBinary(node, parentPrecedence, " + ", 10, 1);
-    }
-
-    else if (node.kind === 49) {
-      this.emitBinary(node, parentPrecedence, " = ", 1, 0);
-    }
-
-    else if (node.kind === 50) {
-      this.emitBinary(node, parentPrecedence, " & ", 6, 0);
-    }
-
-    else if (node.kind === 51) {
-      this.emitBinary(node, parentPrecedence, " | ", 4, 0);
-    }
-
-    else if (node.kind === 52) {
-      this.emitBinary(node, parentPrecedence, " ^ ", 5, 0);
-    }
-
-    else if (node.kind === 53) {
-      this.emitBinary(node, parentPrecedence, " / ", 11, 1);
-    }
-
-    else if (node.kind === 54) {
-      this.emitBinary(node, parentPrecedence, " === ", 7, 0);
-    }
-
-    else if (node.kind === 56) {
-      this.emitBinary(node, parentPrecedence, " > ", 8, 0);
-    }
-
-    else if (node.kind === 57) {
-      this.emitBinary(node, parentPrecedence, " >= ", 8, 0);
-    }
-
-    else if (node.kind === 58) {
-      this.emitBinary(node, parentPrecedence, " < ", 8, 0);
-    }
-
-    else if (node.kind === 59) {
-      this.emitBinary(node, parentPrecedence, " <= ", 8, 0);
-    }
-
-    else if (node.kind === 60) {
-      this.emitBinary(node, parentPrecedence, " && ", 3, 0);
-    }
-
-    else if (node.kind === 61) {
-      this.emitBinary(node, parentPrecedence, " || ", 2, 0);
-    }
-
-    else if (node.kind === 63) {
-      this.emitBinary(node, parentPrecedence, " !== ", 7, 0);
-    }
-
-    else if (node.kind === 64) {
-      this.emitBinary(node, parentPrecedence, " % ", 11, 1);
-    }
-
-    else if (node.kind === 65) {
-      this.emitBinary(node, parentPrecedence, " << ", 9, 0);
-    }
-
-    else if (node.kind === 66) {
-      this.emitBinary(node, parentPrecedence, node.isUnsignedOperator() ? " >>> " : " >> ", 9, 0);
-    }
-
-    else if (node.kind === 67) {
-      this.emitBinary(node, parentPrecedence, " - ", 10, 1);
-    }
-
-    else if (node.kind === 62) {
-      var left = node.binaryLeft();
-      var right = node.binaryRight();
-      var isUnsigned = node.isUnsignedOperator();
-
-      if (isUnsigned && parentPrecedence > 9) {
-        code.appendChar(40);
-      }
-
-      code.append("__imul(");
-      this.emitExpression(left, 0);
-      code.append(", ");
-      this.emitExpression(right, 0);
-      code.appendChar(41);
-      this.foundMultiply = true;
-
-      if (isUnsigned) {
-        code.append(" >>> 0");
-
-        if (parentPrecedence > 9) {
-          code.appendChar(41);
-        }
-      }
-    }
-
-    else {
-      __declare.assert(false);
-    }
-  };
-
-  TurboJsResult.prototype.emitSymbolName = function(symbol) {
-    this.code.append(symbol.rename !== null ? symbol.rename : symbol.name);
-  };
-
-  TurboJsResult.prototype.emitStatement = function(node) {
-    var code = this.code;
-
-    if (node.kind === 15) {
-      var body = node.functionBody();
-
-      if (body === null) {
-        return;
-      }
-
-      var symbol = node.symbol;
-      var needsSemicolon = false;
-      this.emitNewlineBefore(node);
-      this.emitIndent();
-
-      if (symbol.kind === 4) {
-        this.emitSymbolName(symbol.parent());
-        code.append(".prototype.");
-        this.emitSymbolName(symbol);
-        code.append(" = function");
-        needsSemicolon = true;
-      }
-
-      else if (node.isExtern()) {
-        code.append("var ");
-        this.emitSymbolName(symbol);
-        code.append(" = __extern.");
-        this.emitSymbolName(symbol);
-        code.append(" = function");
-        needsSemicolon = true;
-      }
-
-      else {
-        code.append("function ");
-        this.emitSymbolName(symbol);
-      }
-
-      code.appendChar(40);
-      var returnType = node.functionReturnType();
-      var child = node.functionFirstArgumentIgnoringThis();
-
-      while (child !== returnType) {
-        __declare.assert(child.kind === 6);
-        this.emitSymbolName(child.symbol);
-        child = child.nextSibling;
-
-        if (child !== returnType) {
-          code.append(", ");
-        }
-      }
-
-      code.append(") ");
-      this.emitBlock(node.functionBody());
-      code.append(needsSemicolon ? ";\n" : "\n");
-      this.emitNewlineAfter(node);
-    }
-
-    else if (node.kind === 16) {
-      this.emitNewlineBefore(node);
-      this.emitIndent();
-
-      while (true) {
-        code.append("if (");
-        this.emitExpression(node.ifValue(), 0);
-        code.append(") ");
-        this.emitBlock(node.ifTrue());
-        var no = node.ifFalse();
-
-        if (no === null) {
-          code.appendChar(10);
-
-          break;
-        }
-
-        code.append("\n\n");
-        this.emitIndent();
-        code.append("else ");
-
-        if (no.firstChild === null || no.firstChild !== no.lastChild || no.firstChild.kind !== 16) {
-          this.emitBlock(no);
-          code.appendChar(10);
-
-          break;
-        }
-
-        node = no.firstChild;
-      }
-
-      this.emitNewlineAfter(node);
-    }
-
-    else if (node.kind === 20) {
-      this.emitNewlineBefore(node);
-      this.emitIndent();
-      code.append("while (");
-      this.emitExpression(node.whileValue(), 0);
-      code.append(") ");
-      this.emitBlock(node.whileBody());
-      code.appendChar(10);
-      this.emitNewlineAfter(node);
-    }
-
-    else if (node.kind === 8) {
-      this.emitNewlineBefore(node);
-      this.emitIndent();
-      code.append("break;\n");
-      this.emitNewlineAfter(node);
-    }
-
-    else if (node.kind === 11) {
-      this.emitNewlineBefore(node);
-      this.emitIndent();
-      code.append("continue;\n");
-      this.emitNewlineAfter(node);
-    }
-
-    else if (node.kind === 14) {
-      this.emitNewlineBefore(node);
-      this.emitIndent();
-      this.emitExpression(node.expressionValue(), 0);
-      code.append(";\n");
-      this.emitNewlineAfter(node);
-    }
-
-    else if (node.kind === 12) {
-    }
-
-    else if (node.kind === 17) {
-      var value = node.returnValue();
-      this.emitNewlineBefore(node);
-      this.emitIndent();
-
-      if (value !== null) {
-        code.append("return ");
-        this.emitExpression(value, 0);
-        code.append(";\n");
-      }
-
-      else {
-        code.append("return;\n");
-      }
-
-      this.emitNewlineAfter(node);
-    }
-
-    else if (node.kind === 7) {
-      if (node.parent.kind === 7) {
-        this.emitStatements(node.firstChild);
-      }
-
-      else {
-        this.emitNewlineBefore(node);
-        this.emitIndent();
-        this.emitBlock(node);
-        code.appendChar(10);
-        this.emitNewlineAfter(node);
-      }
-    }
-
-    else if (node.kind === 19) {
-      this.emitNewlineBefore(node);
-      this.emitIndent();
-      code.append("var ");
-      var child = node.firstChild;
-
-      while (child !== null) {
-        var value = child.variableValue();
-        this.emitSymbolName(child.symbol);
-        child = child.nextSibling;
-
-        if (child !== null) {
-          code.append(", ");
-        }
-
-        __declare.assert(value !== null);
-        code.append(" = ");
-        this.emitExpression(value, 0);
-      }
-
-      code.append(";\n");
-      this.emitNewlineAfter(node);
-    }
-
-    else if (node.kind === 9) {
-      if (!node.isDeclare()) {
-        this.emitNewlineBefore(node);
-        this.emitIndent();
-        code.append("function ");
-        this.emitSymbolName(node.symbol);
-        code.append("() {\n");
-        this.indent = this.indent + 1 | 0;
-        var argument = node.firstChild;
-
-        while (argument !== null) {
-          if (argument.kind === 6) {
-            this.emitIndent();
-            code.append("this.");
-            this.emitSymbolName(argument.symbol);
-            code.append(" = ");
-            this.emitExpression(argument.variableValue(), 0);
-            code.append(";\n");
-          }
-
-          argument = argument.nextSibling;
-        }
-
-        this.indent = this.indent - 1 | 0;
-        this.emitIndent();
-        code.append("}\n");
-        this.emitNewlineAfter(node);
-      }
-
-      var child = node.firstChild;
-
-      while (child !== null) {
-        if (child.kind === 15) {
-          this.emitStatement(child);
-        }
-
-        child = child.nextSibling;
-      }
-    }
-
-    else if (node.kind === 13) {
-      if (node.isExtern()) {
-        this.emitNewlineBefore(node);
-        this.emitIndent();
-        code.append("__extern.");
-        this.emitSymbolName(node.symbol);
-        code.append(" = {\n");
-        this.indent = this.indent + 1 | 0;
-        var child = node.firstChild;
-
-        while (child !== null) {
-          __declare.assert(child.kind === 6);
-          this.emitIndent();
-          this.emitSymbolName(child.symbol);
-          code.append(": ");
-          code.append(child.symbol.offset.toString());
-          child = child.nextSibling;
-          code.append(child !== null ? ",\n" : "\n");
-        }
-
-        this.indent = this.indent - 1 | 0;
-        this.emitIndent();
-        code.append("};\n");
-        this.emitNewlineAfter(node);
-      }
-    }
-
-    else if (node.kind === 10) {
-    }
-
-    else {
-      __declare.assert(false);
-    }
-  };
-
-  function turboJsEmit(compiler) {
-    var code = StringBuilder_new();
-    var result = new JsResult();
-    result.context = compiler.context;
-    result.code = code;
-    code.append("(function(__declare, __extern) {\n");
-    result.indent = 1;
-    result.emitStatements(compiler.global.firstChild);
-
-    if (result.foundMultiply) {
-      code.appendChar(10);
-      result.emitIndent();
-      code.append("var __imul = Math.imul || function(a, b) {\n");
-      result.indent = 2;
-      result.emitIndent();
-      code.append("return (a * (b >>> 16) << 16) + a * (b & 65535) | 0;\n");
-      result.indent = 1;
-      result.emitIndent();
-      code.append("};\n");
-    }
-
-    code.append("}(\n");
-    result.emitIndent();
-    code.append("typeof global !== 'undefined' ? global : this,\n");
-    result.emitIndent();
-    code.append("typeof exports !== 'undefined' ? exports : this\n");
-    code.append("));\n");
-    compiler.outputJS = code.finish();
-  }
-
   function Type() {
     this.symbol = null;
     this.pointerTo = null;
@@ -8614,8 +7893,6 @@
 
     return symbol !== null && (symbol.kind === 0 || symbol.kind === 3);
   };
-
-  var log = null;
 
   function WasmWrappedType() {
     this.id = 0;
@@ -8775,12 +8052,15 @@
     ByteArray_append32(array, 13);
     this.emitSignatures(array);
     this.emitImportTable(array);
-    this.emitFunctionSignatures(array);
+    this.emitFunctionDeclarations(array);
+    this.emitTables(array);
     this.emitMemory(array);
+    this.emitGlobalDeclarations(array);
     this.emitExportTable(array);
+    this.emitStartFunctionDeclaration(array);
+    this.emitElements(array);
     this.emitFunctionBodies(array);
     this.emitDataSegments(array);
-    this.emitNames(array);
   };
 
   WasmModule.prototype.emitSignatures = function(array) {
@@ -8797,13 +8077,24 @@
         type = type.next;
       }
 
+      wasmWriteVarUnsigned(array, 96);
       wasmWriteVarUnsigned(array, count);
-      wasmWriteVarUnsigned(array, signature.returnType.id);
       type = signature.argumentTypes;
 
       while (type !== null) {
         wasmWriteVarUnsigned(array, type.id);
         type = type.next;
+      }
+
+      var returnTypeId = signature.returnType.id;
+
+      if (returnTypeId > 0) {
+        wasmWriteVarUnsigned(array, 1);
+        wasmWriteVarUnsigned(array, signature.returnType.id);
+      }
+
+      else {
+        wasmWriteVarUnsigned(array, 0);
       }
 
       signature = signature.next;
@@ -8831,12 +8122,12 @@
     wasmFinishSection(array, section);
   };
 
-  WasmModule.prototype.emitFunctionSignatures = function(array) {
+  WasmModule.prototype.emitFunctionDeclarations = function(array) {
     if (this.firstFunction === null) {
       return;
     }
 
-    var section = wasmStartSection(array, 3, "function_signatures");
+    var section = wasmStartSection(array, 3, "function_declarations");
     wasmWriteVarUnsigned(array, this.functionCount);
     var fn = this.firstFunction;
 
@@ -8848,12 +8139,23 @@
     wasmFinishSection(array, section);
   };
 
+  WasmModule.prototype.emitTables = function(array) {
+  };
+
   WasmModule.prototype.emitMemory = function(array) {
     var section = wasmStartSection(array, 5, "memory");
-    wasmWriteVarUnsigned(array, 256);
-    wasmWriteVarUnsigned(array, 256);
     wasmWriteVarUnsigned(array, 1);
+    wasmWriteVarUnsigned(array, false ? 1 : 0);
+    wasmWriteVarUnsigned(array, 256);
+
+    if (false) {
+      wasmWriteVarUnsigned(array, 1073741824);
+    }
+
     wasmFinishSection(array, section);
+  };
+
+  WasmModule.prototype.emitGlobalDeclarations = function(array) {
   };
 
   WasmModule.prototype.emitExportTable = function(array) {
@@ -8879,8 +8181,9 @@
 
     while (fn !== null) {
       if (fn.isExported) {
-        wasmWriteVarUnsigned(array, i);
         wasmWriteLengthPrefixedASCII(array, fn.symbol.name);
+        wasmWriteVarUnsigned(array, 0);
+        wasmWriteVarUnsigned(array, i);
       }
 
       fn = fn.next;
@@ -8888,6 +8191,12 @@
     }
 
     wasmFinishSection(array, section);
+  };
+
+  WasmModule.prototype.emitStartFunctionDeclaration = function(array) {
+  };
+
+  WasmModule.prototype.emitElements = function(array) {
   };
 
   WasmModule.prototype.emitFunctionBodies = function(array) {
@@ -8906,7 +8215,7 @@
       if (fn.intLocalCount > 0) {
         wasmWriteVarUnsigned(array, 1);
         wasmWriteVarUnsigned(array, fn.intLocalCount);
-        array.append(1);
+        array.append(127);
       }
 
       else {
@@ -8920,6 +8229,7 @@
         child = child.nextSibling;
       }
 
+      wasmWriteVarUnsigned(array, 11);
       wasmPatchVarUnsigned(array, bodyLength, (array.length() - bodyLength | 0) - 5 | 0, -1);
       fn = fn.next;
     }
@@ -8936,6 +8246,7 @@
     ByteArray_set32(memoryInitializer, this.originalHeapPointer, initialHeapPointer);
     var section = wasmStartSection(array, 11, "data_segments");
     wasmWriteVarUnsigned(array, 1);
+    wasmWriteVarUnsigned(array, 0);
     wasmWriteVarUnsigned(array, 8);
     wasmWriteVarUnsigned(array, initializerLength);
     var i = 0;
@@ -9597,7 +8908,7 @@
     var context = this.context;
 
     if (type === context.boolType || type.isInteger() || type.isReference()) {
-      return 1;
+      return 127;
     }
 
     if (type === context.voidType) {
@@ -9694,11 +9005,11 @@
   }
 
   function wasmFinishSection(array, offset) {
-    wasmPatchVarUnsigned(array, offset, (array.length() - offset | 0) - 5 | 0, -1);
+    wasmPatchVarUnsigned(array, offset + 1 | 0, (array.length() - offset | 0) - 6 | 0, -1);
   }
 
   function wasmWrapType(id) {
-    __declare.assert(id === 0 || id === 1);
+    __declare.assert(id === 0 || id === 127);
     var type = new WasmWrappedType();
     type.id = id;
 
@@ -9727,7 +9038,6 @@
   }
 
   function wasmEmit(compiler) {
-    log = compiler.log;
     var module = new WasmModule();
     module.context = compiler.context;
     module.memoryInitializer = new ByteArray();

@@ -4,5 +4,8 @@
   "description": "A low-level programming language inspired by TypeScript",
   "bin": {
     "thinc": "lib/thinc.js"
+  },
+  "scripts": {
+    "build-tst":"thinc tests/empty.thin --wasm"
   }
 }

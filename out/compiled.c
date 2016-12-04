@@ -1141,119 +1141,18 @@ static const uint32_t __string_618_t[] = {2, S('\\', 't')};
 static const uint32_t __string_619_r[] = {2, S('\\', 'r')};
 static const uint32_t __string_620_n[] = {2, S('\\', 'n')};
 static const uint32_t __string_621[] = {2, S('\\', '\\')};
-static const uint32_t __string_622[] = {2, S(' ', ' ')};
-static const uint32_t __string_623[] = {2, S('{', '\n')};
-static const uint32_t __string_624_0[] = {6, S(' ', '>'), S('>', '>'), S(' ', '0')};
-static const uint32_t __string_625_0[] = {4, S(' ', '|'), S(' ', '0')};
-static const uint32_t __string_626_0[] = {6, S(' ', '>'), S('>', '>'), S(' ', '0')};
-static const uint32_t __string_627_0[] = {4, S(' ', '|'), S(' ', '0')};
-static const uint32_t __string_628[] = {2, S(',', ' ')};
-static const uint32_t __string_629___declare[] = {10, S('_', '_'), S('d', 'e'), S('c', 'l'), S('a', 'r'), S('e', '.')};
-static const uint32_t __string_630_null[] = {4, S('n', 'u'), S('l', 'l')};
-static const uint32_t __string_631_true[] = {4, S('t', 'r'), S('u', 'e')};
-static const uint32_t __string_632_false[] = {5, S('f', 'a'), S('l', 's'), S('e', 0)};
-static const uint32_t __string_633[] = {4, S(' ', '<'), S('<', ' ')};
-static const uint32_t __string_634[] = {4, S(' ', '>'), S('>', ' ')};
-static const uint32_t __string_635[] = {3, S(' ', '&'), S(' ', 0)};
-static const uint32_t __string_636_0[] = {4, S(' ', '|'), S(' ', '0')};
-static const uint32_t __string_637_0[] = {6, S(' ', '>'), S('>', '>'), S(' ', '0')};
-static const uint32_t __string_638[] = {3, S(' ', '?'), S(' ', 0)};
-static const uint32_t __string_639[] = {3, S(' ', ':'), S(' ', 0)};
-static const uint32_t __string_640_new[] = {4, S('n', 'e'), S('w', ' ')};
-static const uint32_t __string_641[] = {2, S('(', ')')};
-static const uint32_t __string_642[] = {1, S('!', 0)};
-static const uint32_t __string_643[] = {1, S('~', 0)};
-static const uint32_t __string_644[] = {1, S('-', 0)};
-static const uint32_t __string_645[] = {1, S('+', 0)};
-static const uint32_t __string_646[] = {2, S('+', '+')};
-static const uint32_t __string_647[] = {2, S('-', '-')};
-static const uint32_t __string_648[] = {2, S('+', '+')};
-static const uint32_t __string_649[] = {2, S('-', '-')};
-static const uint32_t __string_650[] = {3, S(' ', '+'), S(' ', 0)};
-static const uint32_t __string_651[] = {3, S(' ', '='), S(' ', 0)};
-static const uint32_t __string_652[] = {3, S(' ', '&'), S(' ', 0)};
-static const uint32_t __string_653[] = {3, S(' ', '|'), S(' ', 0)};
-static const uint32_t __string_654[] = {3, S(' ', '^'), S(' ', 0)};
-static const uint32_t __string_655[] = {3, S(' ', '/'), S(' ', 0)};
-static const uint32_t __string_656[] = {5, S(' ', '='), S('=', '='), S(' ', 0)};
-static const uint32_t __string_657[] = {3, S(' ', '>'), S(' ', 0)};
-static const uint32_t __string_658[] = {4, S(' ', '>'), S('=', ' ')};
-static const uint32_t __string_659[] = {3, S(' ', '<'), S(' ', 0)};
-static const uint32_t __string_660[] = {4, S(' ', '<'), S('=', ' ')};
-static const uint32_t __string_661[] = {4, S(' ', '&'), S('&', ' ')};
-static const uint32_t __string_662[] = {4, S(' ', '|'), S('|', ' ')};
-static const uint32_t __string_663[] = {5, S(' ', '!'), S('=', '='), S(' ', 0)};
-static const uint32_t __string_664[] = {3, S(' ', '%'), S(' ', 0)};
-static const uint32_t __string_665[] = {4, S(' ', '<'), S('<', ' ')};
-static const uint32_t __string_666[] = {5, S(' ', '>'), S('>', '>'), S(' ', 0)};
-static const uint32_t __string_667[] = {4, S(' ', '>'), S('>', ' ')};
-static const uint32_t __string_668[] = {3, S(' ', '-'), S(' ', 0)};
-static const uint32_t __string_669___imul[] = {7, S('_', '_'), S('i', 'm'), S('u', 'l'), S('(', 0)};
-static const uint32_t __string_670[] = {2, S(',', ' ')};
-static const uint32_t __string_671_0[] = {6, S(' ', '>'), S('>', '>'), S(' ', '0')};
-static const uint32_t __string_672_prototype[] = {11, S('.', 'p'), S('r', 'o'), S('t', 'o'), S('t', 'y'), S('p', 'e'), S('.', 0)};
-static const uint32_t __string_673_function[] = {11, S(' ', '='), S(' ', 'f'), S('u', 'n'), S('c', 't'), S('i', 'o'), S('n', 0)};
-static const uint32_t __string_674_var[] = {4, S('v', 'a'), S('r', ' ')};
-static const uint32_t __string_675___extern[] = {12, S(' ', '='), S(' ', '_'), S('_', 'e'), S('x', 't'), S('e', 'r'), S('n', '.')};
-static const uint32_t __string_676_function[] = {11, S(' ', '='), S(' ', 'f'), S('u', 'n'), S('c', 't'), S('i', 'o'), S('n', 0)};
-static const uint32_t __string_677_function[] = {9, S('f', 'u'), S('n', 'c'), S('t', 'i'), S('o', 'n'), S(' ', 0)};
-static const uint32_t __string_678[] = {2, S(',', ' ')};
-static const uint32_t __string_679[] = {2, S(')', ' ')};
-static const uint32_t __string_680[] = {2, S(';', '\n')};
-static const uint32_t __string_681[] = {1, S('\n', 0)};
-static const uint32_t __string_682_if[] = {4, S('i', 'f'), S(' ', '(')};
-static const uint32_t __string_683[] = {2, S(')', ' ')};
-static const uint32_t __string_684[] = {2, S('\n', '\n')};
-static const uint32_t __string_685_else[] = {5, S('e', 'l'), S('s', 'e'), S(' ', 0)};
-static const uint32_t __string_686_while[] = {7, S('w', 'h'), S('i', 'l'), S('e', ' '), S('(', 0)};
-static const uint32_t __string_687[] = {2, S(')', ' ')};
-static const uint32_t __string_688_break[] = {7, S('b', 'r'), S('e', 'a'), S('k', ';'), S('\n', 0)};
-static const uint32_t __string_689_continue[] = {10, S('c', 'o'), S('n', 't'), S('i', 'n'), S('u', 'e'), S(';', '\n')};
-static const uint32_t __string_690[] = {2, S(';', '\n')};
-static const uint32_t __string_691_return[] = {7, S('r', 'e'), S('t', 'u'), S('r', 'n'), S(' ', 0)};
-static const uint32_t __string_692[] = {2, S(';', '\n')};
-static const uint32_t __string_693_return[] = {8, S('r', 'e'), S('t', 'u'), S('r', 'n'), S(';', '\n')};
-static const uint32_t __string_694_var[] = {4, S('v', 'a'), S('r', ' ')};
-static const uint32_t __string_695[] = {2, S(',', ' ')};
-static const uint32_t __string_696[] = {3, S(' ', '='), S(' ', 0)};
-static const uint32_t __string_697[] = {2, S(';', '\n')};
-static const uint32_t __string_698_function[] = {9, S('f', 'u'), S('n', 'c'), S('t', 'i'), S('o', 'n'), S(' ', 0)};
-static const uint32_t __string_699[] = {5, S('(', ')'), S(' ', '{'), S('\n', 0)};
-static const uint32_t __string_700_this[] = {5, S('t', 'h'), S('i', 's'), S('.', 0)};
-static const uint32_t __string_701[] = {3, S(' ', '='), S(' ', 0)};
-static const uint32_t __string_702[] = {2, S(';', '\n')};
-static const uint32_t __string_703[] = {2, S('}', '\n')};
-static const uint32_t __string_704___extern[] = {9, S('_', '_'), S('e', 'x'), S('t', 'e'), S('r', 'n'), S('.', 0)};
-static const uint32_t __string_705[] = {5, S(' ', '='), S(' ', '{'), S('\n', 0)};
-static const uint32_t __string_706[] = {2, S(':', ' ')};
-static const uint32_t __string_707[] = {2, S(',', '\n')};
-static const uint32_t __string_708[] = {1, S('\n', 0)};
-static const uint32_t __string_709[] = {3, S('}', ';'), S('\n', 0)};
-static const uint32_t __string_710_function___declare___extern[] = {33, S('(', 'f'), S('u', 'n'), S('c', 't'), S('i', 'o'), S('n', '('), S('_', '_'), S('d', 'e'), S('c', 'l'), S('a', 'r'), S('e', ','), S(' ',
-  '_'), S('_', 'e'), S('x', 't'), S('e', 'r'), S('n', ')'), S(' ', '{'), S('\n', 0)};
-static const uint32_t __string_711_var___imul_Math_imul_functi[] = {43, S('v', 'a'), S('r', ' '), S('_', '_'), S('i', 'm'), S('u', 'l'), S(' ', '='), S(' ', 'M'), S('a', 't'), S('h', '.'), S('i', 'm'), S('u',
-  'l'), S(' ', '|'), S('|', ' '), S('f', 'u'), S('n', 'c'), S('t', 'i'), S('o', 'n'), S('(', 'a'), S(',', ' '), S('b', ')'), S(' ', '{'), S('\n', 0)};
-static const uint32_t __string_712_return_a_b_16_16[] = {53, S('r', 'e'), S('t', 'u'), S('r', 'n'), S(' ', '('), S('a', ' '), S('*', ' '), S('(', 'b'), S(' ', '>'), S('>', '>'), S(' ', '1'), S('6',
-  ')'), S(' ', '<'), S('<', ' '), S('1', '6'), S(')', ' '), S('+', ' '), S('a', ' '), S('*', ' '), S('(', 'b'), S(' ', '&'), S(' ', '6'), S('5', '5'), S('3', '5'), S(')', ' '), S('|', ' '), S('0', ';'), S('\n', 0)};
-static const uint32_t __string_713[] = {3, S('}', ';'), S('\n', 0)};
-static const uint32_t __string_714[] = {3, S('}', '('), S('\n', 0)};
-static const uint32_t __string_715_typeof_global_undefined[] = {47, S('t', 'y'), S('p', 'e'), S('o', 'f'), S(' ', 'g'), S('l', 'o'), S('b', 'a'), S('l', ' '), S('!', '='), S('=', ' '), S('\'', 'u'), S('n',
-  'd'), S('e', 'f'), S('i', 'n'), S('e', 'd'), S('\'', ' '), S('?', ' '), S('g', 'l'), S('o', 'b'), S('a', 'l'), S(' ', ':'), S(' ', 't'), S('h', 'i'), S('s', ','), S('\n', 0)};
-static const uint32_t __string_716_typeof_exports_undefined[] = {48, S('t', 'y'), S('p', 'e'), S('o', 'f'), S(' ', 'e'), S('x', 'p'), S('o', 'r'), S('t', 's'), S(' ', '!'), S('=', '='), S(' ', '\''), S('u',
-  'n'), S('d', 'e'), S('f', 'i'), S('n', 'e'), S('d', '\''), S(' ', '?'), S(' ', 'e'), S('x', 'p'), S('o', 'r'), S('t', 's'), S(' ', ':'), S(' ', 't'), S('h', 'i'), S('s', '\n')};
-static const uint32_t __string_717[] = {4, S(')', ')'), S(';', '\n')};
-static const uint32_t __string_718_signatures[] = {10, S('s', 'i'), S('g', 'n'), S('a', 't'), S('u', 'r'), S('e', 's')};
-static const uint32_t __string_719_import_table[] = {12, S('i', 'm'), S('p', 'o'), S('r', 't'), S('_', 't'), S('a', 'b'), S('l', 'e')};
-static const uint32_t __string_720_function_signatures[] = {19, S('f', 'u'), S('n', 'c'), S('t', 'i'), S('o', 'n'), S('_', 's'), S('i', 'g'), S('n', 'a'), S('t', 'u'), S('r', 'e'), S('s', 0)};
-static const uint32_t __string_721_memory[] = {6, S('m', 'e'), S('m', 'o'), S('r', 'y')};
-static const uint32_t __string_722_export_table[] = {12, S('e', 'x'), S('p', 'o'), S('r', 't'), S('_', 't'), S('a', 'b'), S('l', 'e')};
-static const uint32_t __string_723_function_bodies[] = {15, S('f', 'u'), S('n', 'c'), S('t', 'i'), S('o', 'n'), S('_', 'b'), S('o', 'd'), S('i', 'e'), S('s', 0)};
-static const uint32_t __string_724_data_segments[] = {13, S('d', 'a'), S('t', 'a'), S('_', 's'), S('e', 'g'), S('m', 'e'), S('n', 't'), S('s', 0)};
-static const uint32_t __string_725_names[] = {5, S('n', 'a'), S('m', 'e'), S('s', 0)};
-static const uint32_t __string_726_currentHeapPointer[] = {18, S('c', 'u'), S('r', 'r'), S('e', 'n'), S('t', 'H'), S('e', 'a'), S('p', 'P'), S('o', 'i'), S('n', 't'), S('e', 'r')};
-static const uint32_t __string_727_originalHeapPointer[] = {19, S('o', 'r'), S('i', 'g'), S('i', 'n'), S('a', 'l'), S('H', 'e'), S('a', 'p'), S('P', 'o'), S('i', 'n'), S('t', 'e'), S('r', 0)};
-static const uint32_t __string_728_global[] = {6, S('g', 'l'), S('o', 'b'), S('a', 'l')};
-static const uint32_t __string_729_malloc[] = {6, S('m', 'a'), S('l', 'l'), S('o', 'c')};
+static const uint32_t __string_622_signatures[] = {10, S('s', 'i'), S('g', 'n'), S('a', 't'), S('u', 'r'), S('e', 's')};
+static const uint32_t __string_623_import_table[] = {12, S('i', 'm'), S('p', 'o'), S('r', 't'), S('_', 't'), S('a', 'b'), S('l', 'e')};
+static const uint32_t __string_624_function_declarations[] = {21, S('f', 'u'), S('n', 'c'), S('t', 'i'), S('o', 'n'), S('_', 'd'), S('e', 'c'), S('l', 'a'), S('r', 'a'), S('t', 'i'), S('o', 'n'), S('s', 0)};
+static const uint32_t __string_625_memory[] = {6, S('m', 'e'), S('m', 'o'), S('r', 'y')};
+static const uint32_t __string_626_export_table[] = {12, S('e', 'x'), S('p', 'o'), S('r', 't'), S('_', 't'), S('a', 'b'), S('l', 'e')};
+static const uint32_t __string_627_function_bodies[] = {15, S('f', 'u'), S('n', 'c'), S('t', 'i'), S('o', 'n'), S('_', 'b'), S('o', 'd'), S('i', 'e'), S('s', 0)};
+static const uint32_t __string_628_data_segments[] = {13, S('d', 'a'), S('t', 'a'), S('_', 's'), S('e', 'g'), S('m', 'e'), S('n', 't'), S('s', 0)};
+static const uint32_t __string_629_names[] = {5, S('n', 'a'), S('m', 'e'), S('s', 0)};
+static const uint32_t __string_630_currentHeapPointer[] = {18, S('c', 'u'), S('r', 'r'), S('e', 'n'), S('t', 'H'), S('e', 'a'), S('p', 'P'), S('o', 'i'), S('n', 't'), S('e', 'r')};
+static const uint32_t __string_631_originalHeapPointer[] = {19, S('o', 'r'), S('i', 'g'), S('i', 'n'), S('a', 'l'), S('H', 'e'), S('a', 'p'), S('P', 'o'), S('i', 'n'), S('t', 'e'), S('r', 0)};
+static const uint32_t __string_632_global[] = {6, S('g', 'l'), S('o', 'b'), S('a', 'l')};
+static const uint32_t __string_633_malloc[] = {6, S('m', 'a'), S('l', 'l'), S('o', 'c')};
 
 #undef S
 
@@ -1276,7 +1175,6 @@ struct Preprocessor;
 struct Scope;
 struct StringBuilder;
 struct Symbol;
-struct TurboJsResult;
 struct Type;
 struct WasmWrappedType;
 struct WasmSignature;
@@ -1461,14 +1359,6 @@ struct Symbol {
   int32_t maxAlignment;
   const uint16_t *rename;
   int32_t offset;
-};
-
-struct TurboJsResult {
-  struct CheckContext *context;
-  struct StringBuilder *code;
-  int32_t indent;
-  uint8_t foundMultiply;
-  struct Node *previousNode;
 };
 
 struct Type {
@@ -1832,18 +1722,6 @@ static uint8_t Symbol_isUsed(struct Symbol *__this);
 static struct Symbol *Symbol_parent(struct Symbol *__this);
 static struct Type *Symbol_resolvedTypeUnderlyingIfEnumValue(struct Symbol *__this, struct CheckContext *context);
 static void Symbol_determineClassLayout(struct Symbol *__this, struct CheckContext *context);
-static void TurboJsResult_emitIndent(struct TurboJsResult *__this);
-static void TurboJsResult_emitNewlineBefore(struct TurboJsResult *__this, struct Node *node);
-static void TurboJsResult_emitNewlineAfter(struct TurboJsResult *__this, struct Node *node);
-static void TurboJsResult_emitStatements(struct TurboJsResult *__this, struct Node *node);
-static void TurboJsResult_emitBlock(struct TurboJsResult *__this, struct Node *node);
-static void TurboJsResult_emitUnary(struct TurboJsResult *__this, struct Node *node, int32_t parentPrecedence, const uint16_t *operator);
-static void TurboJsResult_emitBinary(struct TurboJsResult *__this, struct Node *node, int32_t parentPrecedence, const uint16_t *operator, int32_t operatorPrecedence, int32_t mode);
-static void TurboJsResult_emitCommaSeparatedExpressions(struct TurboJsResult *__this, struct Node *start, struct Node *stop);
-static void TurboJsResult_emitExpression(struct TurboJsResult *__this, struct Node *node, int32_t parentPrecedence);
-static void TurboJsResult_emitSymbolName(struct TurboJsResult *__this, struct Symbol *symbol);
-static void TurboJsResult_emitStatement(struct TurboJsResult *__this, struct Node *node);
-static void turboJsEmit(struct Compiler *compiler);
 static uint8_t Type_isClass(struct Type *__this);
 static uint8_t Type_isEnum(struct Type *__this);
 static uint8_t Type_isInteger(struct Type *__this);
@@ -1868,9 +1746,13 @@ static int32_t WasmModule_allocateSignature(struct WasmModule *__this, struct Wa
 static void WasmModule_emitModule(struct WasmModule *__this, struct ByteArray *array);
 static void WasmModule_emitSignatures(struct WasmModule *__this, struct ByteArray *array);
 static void WasmModule_emitImportTable(struct WasmModule *__this, struct ByteArray *array);
-static void WasmModule_emitFunctionSignatures(struct WasmModule *__this, struct ByteArray *array);
+static void WasmModule_emitFunctionDeclarations(struct WasmModule *__this, struct ByteArray *array);
+static void WasmModule_emitTables(struct WasmModule *__this, struct ByteArray *array);
 static void WasmModule_emitMemory(struct WasmModule *__this, struct ByteArray *array);
+static void WasmModule_emitGlobalDeclarations(struct WasmModule *__this, struct ByteArray *array);
 static void WasmModule_emitExportTable(struct WasmModule *__this, struct ByteArray *array);
+static void WasmModule_emitStartFunctionDeclaration(struct WasmModule *__this, struct ByteArray *array);
+static void WasmModule_emitElements(struct WasmModule *__this, struct ByteArray *array);
 static void WasmModule_emitFunctionBodies(struct WasmModule *__this, struct ByteArray *array);
 static void WasmModule_emitDataSegments(struct WasmModule *__this, struct ByteArray *array);
 static void WasmModule_emitNames(struct WasmModule *__this, struct ByteArray *array);
@@ -1893,7 +1775,6 @@ static void wasmEmit(struct Compiler *compiler);
 static struct CommandLineArgument *firstArgument = NULL;
 static struct CommandLineArgument *lastArgument = NULL;
 static struct StringBuilder *stringBuilderPool = NULL;
-static struct Log *log = NULL;
 
 static const uint16_t *ushort_toString(uint16_t __this) {
   return uint_toString((uint32_t)__this);
@@ -9838,719 +9719,6 @@ static void Symbol_determineClassLayout(struct Symbol *__this, struct CheckConte
   __this->maxAlignment = maxAlignment;
 }
 
-static void TurboJsResult_emitIndent(struct TurboJsResult *__this) {
-  int32_t i = __this->indent;
-
-  while (i > 0) {
-    StringBuilder_append(__this->code, (const uint16_t *)__string_622);
-    i = i - 1;
-  }
-}
-
-static void TurboJsResult_emitNewlineBefore(struct TurboJsResult *__this, struct Node *node) {
-  if (__this->previousNode != NULL && (!isCompactNodeKind(__this->previousNode->kind) || !isCompactNodeKind(node->kind))) {
-    StringBuilder_appendChar(__this->code, 10);
-  }
-
-  __this->previousNode = NULL;
-}
-
-static void TurboJsResult_emitNewlineAfter(struct TurboJsResult *__this, struct Node *node) {
-  __this->previousNode = node;
-}
-
-static void TurboJsResult_emitStatements(struct TurboJsResult *__this, struct Node *node) {
-  while (node != NULL) {
-    TurboJsResult_emitStatement(__this, node);
-    node = node->nextSibling;
-  }
-}
-
-static void TurboJsResult_emitBlock(struct TurboJsResult *__this, struct Node *node) {
-  __this->previousNode = NULL;
-  StringBuilder_append(__this->code, (const uint16_t *)__string_623);
-  __this->indent = __this->indent + 1;
-  TurboJsResult_emitStatements(__this, node->firstChild);
-  __this->indent = __this->indent - 1;
-  TurboJsResult_emitIndent(__this);
-  StringBuilder_appendChar(__this->code, 125);
-  __this->previousNode = NULL;
-}
-
-static void TurboJsResult_emitUnary(struct TurboJsResult *__this, struct Node *node, int32_t parentPrecedence, const uint16_t *operator) {
-  uint8_t isPostfix = isUnaryPostfix(node->kind);
-  uint8_t shouldCastToInt = node->kind == 40 && !jsKindCastsOperandsToInt(node->parent->kind);
-  uint8_t isUnsigned = Node_isUnsignedOperator(node);
-  int32_t operatorPrecedence = shouldCastToInt ? isUnsigned ? 9 : 4 : isPostfix ? 14 : 13;
-  struct StringBuilder *code = __this->code;
-
-  if (parentPrecedence > operatorPrecedence) {
-    StringBuilder_appendChar(code, 40);
-  }
-
-  if (!isPostfix) {
-    StringBuilder_append(code, operator);
-  }
-
-  TurboJsResult_emitExpression(__this, Node_unaryValue(node), operatorPrecedence);
-
-  if (isPostfix) {
-    StringBuilder_append(code, operator);
-  }
-
-  if (shouldCastToInt) {
-    StringBuilder_append(code, isUnsigned ? (const uint16_t *)__string_624_0 : (const uint16_t *)__string_625_0);
-  }
-
-  if (parentPrecedence > operatorPrecedence) {
-    StringBuilder_appendChar(code, 41);
-  }
-}
-
-static void TurboJsResult_emitBinary(struct TurboJsResult *__this, struct Node *node, int32_t parentPrecedence, const uint16_t *operator, int32_t operatorPrecedence, int32_t mode) {
-  uint8_t isRightAssociative = node->kind == 49;
-  uint8_t isUnsigned = Node_isUnsignedOperator(node);
-  struct StringBuilder *code = __this->code;
-  uint8_t shouldCastToInt = mode == 1 && (isUnsigned || !jsKindCastsOperandsToInt(node->parent->kind));
-  int32_t selfPrecedence = shouldCastToInt ? isUnsigned ? 9 : 4 : parentPrecedence;
-
-  if (parentPrecedence > selfPrecedence) {
-    StringBuilder_appendChar(code, 40);
-  }
-
-  if (selfPrecedence > operatorPrecedence) {
-    StringBuilder_appendChar(code, 40);
-  }
-
-  TurboJsResult_emitExpression(__this, Node_binaryLeft(node), isRightAssociative ? (int32_t)((int32_t)operatorPrecedence + 1) : operatorPrecedence);
-  StringBuilder_append(code, operator);
-  TurboJsResult_emitExpression(__this, Node_binaryRight(node), isRightAssociative ? operatorPrecedence : (int32_t)((int32_t)operatorPrecedence + 1));
-
-  if (selfPrecedence > operatorPrecedence) {
-    StringBuilder_appendChar(code, 41);
-  }
-
-  if (shouldCastToInt) {
-    StringBuilder_append(code, isUnsigned ? (const uint16_t *)__string_626_0 : (const uint16_t *)__string_627_0);
-  }
-
-  if (parentPrecedence > selfPrecedence) {
-    StringBuilder_appendChar(code, 41);
-  }
-}
-
-static void TurboJsResult_emitCommaSeparatedExpressions(struct TurboJsResult *__this, struct Node *start, struct Node *stop) {
-  while (start != stop) {
-    TurboJsResult_emitExpression(__this, start, 0);
-    start = start->nextSibling;
-
-    if (start != stop) {
-      StringBuilder_append(__this->code, (const uint16_t *)__string_628);
-    }
-  }
-}
-
-static void TurboJsResult_emitExpression(struct TurboJsResult *__this, struct Node *node, int32_t parentPrecedence) {
-  struct StringBuilder *code = __this->code;
-
-  if (node->kind == 29) {
-    struct Symbol *symbol = node->symbol;
-
-    if (symbol->kind == 5 && Node_isDeclare(symbol->node)) {
-      StringBuilder_append(code, (const uint16_t *)__string_629___declare);
-    }
-
-    TurboJsResult_emitSymbolName(__this, symbol);
-  }
-
-  else if (node->kind == 31) {
-    StringBuilder_append(code, (const uint16_t *)__string_630_null);
-  }
-
-  else if (node->kind == 22) {
-    StringBuilder_append(code, node->intValue != 0 ? (const uint16_t *)__string_631_true : (const uint16_t *)__string_632_false);
-  }
-
-  else if (node->kind == 28) {
-    if (parentPrecedence == 15) {
-      StringBuilder_appendChar(code, 40);
-    }
-
-    StringBuilder_append(code, Type_isUnsigned(node->resolvedType) ? uint_toString((uint32_t)node->intValue) : int_toString(node->intValue));
-
-    if (parentPrecedence == 15) {
-      StringBuilder_appendChar(code, 41);
-    }
-  }
-
-  else if (node->kind == 34) {
-    StringBuilder_appendQuoted(code, node->stringValue);
-  }
-
-  else if (node->kind == 24) {
-    struct CheckContext *context = __this->context;
-    struct Node *value = Node_castValue(node);
-    struct Type *from = Type_underlyingType(value->resolvedType, context);
-    struct Type *type = Type_underlyingType(node->resolvedType, context);
-    int32_t fromSize = Type_variableSizeOf(from, context);
-    int32_t typeSize = Type_variableSizeOf(type, context);
-
-    if (from == type || fromSize < typeSize) {
-      TurboJsResult_emitExpression(__this, value, parentPrecedence);
-    }
-
-    else if (type == context->sbyteType || type == context->shortType) {
-      if (parentPrecedence > 9) {
-        StringBuilder_appendChar(code, 40);
-      }
-
-      const uint16_t *shift = int_toString(32 - (typeSize << 3));
-      TurboJsResult_emitExpression(__this, value, 9);
-      StringBuilder_append(code, (const uint16_t *)__string_633);
-      StringBuilder_append(code, shift);
-      StringBuilder_append(code, (const uint16_t *)__string_634);
-      StringBuilder_append(code, shift);
-
-      if (parentPrecedence > 9) {
-        StringBuilder_appendChar(code, 41);
-      }
-    }
-
-    else if (type == context->byteType || type == context->ushortType) {
-      if (parentPrecedence > 6) {
-        StringBuilder_appendChar(code, 40);
-      }
-
-      TurboJsResult_emitExpression(__this, value, 6);
-      StringBuilder_append(code, (const uint16_t *)__string_635);
-      StringBuilder_append(code, uint_toString(Type_integerBitMask(type, context)));
-
-      if (parentPrecedence > 6) {
-        StringBuilder_appendChar(code, 41);
-      }
-    }
-
-    else if (type == context->intType) {
-      if (parentPrecedence > 4) {
-        StringBuilder_appendChar(code, 40);
-      }
-
-      TurboJsResult_emitExpression(__this, value, 4);
-      StringBuilder_append(code, (const uint16_t *)__string_636_0);
-
-      if (parentPrecedence > 4) {
-        StringBuilder_appendChar(code, 41);
-      }
-    }
-
-    else if (type == context->uintType) {
-      if (parentPrecedence > 9) {
-        StringBuilder_appendChar(code, 40);
-      }
-
-      TurboJsResult_emitExpression(__this, value, 9);
-      StringBuilder_append(code, (const uint16_t *)__string_637_0);
-
-      if (parentPrecedence > 9) {
-        StringBuilder_appendChar(code, 41);
-      }
-    }
-
-    else {
-      TurboJsResult_emitExpression(__this, value, parentPrecedence);
-    }
-  }
-
-  else if (node->kind == 25) {
-    TurboJsResult_emitExpression(__this, Node_dotTarget(node), 15);
-    StringBuilder_appendChar(code, 46);
-    TurboJsResult_emitSymbolName(__this, node->symbol);
-  }
-
-  else if (node->kind == 26) {
-    if (parentPrecedence > 1) {
-      StringBuilder_appendChar(code, 40);
-    }
-
-    TurboJsResult_emitExpression(__this, Node_hookValue(node), 2);
-    StringBuilder_append(code, (const uint16_t *)__string_638);
-    TurboJsResult_emitExpression(__this, Node_hookTrue(node), 1);
-    StringBuilder_append(code, (const uint16_t *)__string_639);
-    TurboJsResult_emitExpression(__this, Node_hookFalse(node), 1);
-
-    if (parentPrecedence > 1) {
-      StringBuilder_appendChar(code, 41);
-    }
-  }
-
-  else if (node->kind == 27) {
-    struct Node *value = Node_indexTarget(node);
-    TurboJsResult_emitExpression(__this, value, 14);
-    StringBuilder_appendChar(code, 91);
-    TurboJsResult_emitCommaSeparatedExpressions(__this, value->nextSibling, NULL);
-    StringBuilder_appendChar(code, 93);
-  }
-
-  else if (node->kind == 23) {
-    if (Node_expandCallIntoOperatorTree(node)) {
-      TurboJsResult_emitExpression(__this, node, parentPrecedence);
-    }
-
-    else {
-      struct Node *value = Node_callValue(node);
-      TurboJsResult_emitExpression(__this, value, 14);
-
-      if (value->symbol == NULL || !Symbol_isGetter(value->symbol)) {
-        StringBuilder_appendChar(code, 40);
-        TurboJsResult_emitCommaSeparatedExpressions(__this, value->nextSibling, NULL);
-        StringBuilder_appendChar(code, 41);
-      }
-    }
-  }
-
-  else if (node->kind == 30) {
-    StringBuilder_append(code, (const uint16_t *)__string_640_new);
-    TurboJsResult_emitExpression(__this, Node_newType(node), 14);
-    StringBuilder_append(code, (const uint16_t *)__string_641);
-  }
-
-  else if (node->kind == 41) {
-    struct Node *value = Node_unaryValue(node);
-    Node_expandCallIntoOperatorTree(value);
-    int32_t invertedKind = invertedBinaryKind(value->kind);
-
-    if (invertedKind != value->kind) {
-      value->kind = invertedKind;
-      TurboJsResult_emitExpression(__this, value, parentPrecedence);
-    }
-
-    else {
-      TurboJsResult_emitUnary(__this, node, parentPrecedence, (const uint16_t *)__string_642);
-    }
-  }
-
-  else if (node->kind == 38) {
-    TurboJsResult_emitUnary(__this, node, parentPrecedence, (const uint16_t *)__string_643);
-  }
-
-  else if (node->kind == 40) {
-    TurboJsResult_emitUnary(__this, node, parentPrecedence, (const uint16_t *)__string_644);
-  }
-
-  else if (node->kind == 43) {
-    TurboJsResult_emitUnary(__this, node, parentPrecedence, (const uint16_t *)__string_645);
-  }
-
-  else if (node->kind == 47) {
-    TurboJsResult_emitUnary(__this, node, parentPrecedence, (const uint16_t *)__string_646);
-  }
-
-  else if (node->kind == 46) {
-    TurboJsResult_emitUnary(__this, node, parentPrecedence, (const uint16_t *)__string_647);
-  }
-
-  else if (node->kind == 45) {
-    TurboJsResult_emitUnary(__this, node, parentPrecedence, (const uint16_t *)__string_648);
-  }
-
-  else if (node->kind == 44) {
-    TurboJsResult_emitUnary(__this, node, parentPrecedence, (const uint16_t *)__string_649);
-  }
-
-  else if (node->kind == 48) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_650, 10, 1);
-  }
-
-  else if (node->kind == 49) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_651, 1, 0);
-  }
-
-  else if (node->kind == 50) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_652, 6, 0);
-  }
-
-  else if (node->kind == 51) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_653, 4, 0);
-  }
-
-  else if (node->kind == 52) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_654, 5, 0);
-  }
-
-  else if (node->kind == 53) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_655, 11, 1);
-  }
-
-  else if (node->kind == 54) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_656, 7, 0);
-  }
-
-  else if (node->kind == 56) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_657, 8, 0);
-  }
-
-  else if (node->kind == 57) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_658, 8, 0);
-  }
-
-  else if (node->kind == 58) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_659, 8, 0);
-  }
-
-  else if (node->kind == 59) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_660, 8, 0);
-  }
-
-  else if (node->kind == 60) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_661, 3, 0);
-  }
-
-  else if (node->kind == 61) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_662, 2, 0);
-  }
-
-  else if (node->kind == 63) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_663, 7, 0);
-  }
-
-  else if (node->kind == 64) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_664, 11, 1);
-  }
-
-  else if (node->kind == 65) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_665, 9, 0);
-  }
-
-  else if (node->kind == 66) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, Node_isUnsignedOperator(node) ? (const uint16_t *)__string_666 : (const uint16_t *)__string_667, 9, 0);
-  }
-
-  else if (node->kind == 67) {
-    TurboJsResult_emitBinary(__this, node, parentPrecedence, (const uint16_t *)__string_668, 10, 1);
-  }
-
-  else if (node->kind == 62) {
-    struct Node *left = Node_binaryLeft(node);
-    struct Node *right = Node_binaryRight(node);
-    uint8_t isUnsigned = Node_isUnsignedOperator(node);
-
-    if (isUnsigned && parentPrecedence > 9) {
-      StringBuilder_appendChar(code, 40);
-    }
-
-    StringBuilder_append(code, (const uint16_t *)__string_669___imul);
-    TurboJsResult_emitExpression(__this, left, 0);
-    StringBuilder_append(code, (const uint16_t *)__string_670);
-    TurboJsResult_emitExpression(__this, right, 0);
-    StringBuilder_appendChar(code, 41);
-    __this->foundMultiply = 1;
-
-    if (isUnsigned) {
-      StringBuilder_append(code, (const uint16_t *)__string_671_0);
-
-      if (parentPrecedence > 9) {
-        StringBuilder_appendChar(code, 41);
-      }
-    }
-  }
-
-  else {
-    assert(0);
-  }
-}
-
-static void TurboJsResult_emitSymbolName(struct TurboJsResult *__this, struct Symbol *symbol) {
-  StringBuilder_append(__this->code, !string_op_equals(symbol->rename, NULL) ? symbol->rename : symbol->name);
-}
-
-static void TurboJsResult_emitStatement(struct TurboJsResult *__this, struct Node *node) {
-  struct StringBuilder *code = __this->code;
-
-  if (node->kind == 15) {
-    struct Node *body = Node_functionBody(node);
-
-    if (body == NULL) {
-      return;
-    }
-
-    struct Symbol *symbol = node->symbol;
-    uint8_t needsSemicolon = 0;
-    TurboJsResult_emitNewlineBefore(__this, node);
-    TurboJsResult_emitIndent(__this);
-
-    if (symbol->kind == 4) {
-      TurboJsResult_emitSymbolName(__this, Symbol_parent(symbol));
-      StringBuilder_append(code, (const uint16_t *)__string_672_prototype);
-      TurboJsResult_emitSymbolName(__this, symbol);
-      StringBuilder_append(code, (const uint16_t *)__string_673_function);
-      needsSemicolon = 1;
-    }
-
-    else if (Node_isExtern(node)) {
-      StringBuilder_append(code, (const uint16_t *)__string_674_var);
-      TurboJsResult_emitSymbolName(__this, symbol);
-      StringBuilder_append(code, (const uint16_t *)__string_675___extern);
-      TurboJsResult_emitSymbolName(__this, symbol);
-      StringBuilder_append(code, (const uint16_t *)__string_676_function);
-      needsSemicolon = 1;
-    }
-
-    else {
-      StringBuilder_append(code, (const uint16_t *)__string_677_function);
-      TurboJsResult_emitSymbolName(__this, symbol);
-    }
-
-    StringBuilder_appendChar(code, 40);
-    struct Node *returnType = Node_functionReturnType(node);
-    struct Node *child = Node_functionFirstArgumentIgnoringThis(node);
-
-    while (child != returnType) {
-      assert(child->kind == 6);
-      TurboJsResult_emitSymbolName(__this, child->symbol);
-      child = child->nextSibling;
-
-      if (child != returnType) {
-        StringBuilder_append(code, (const uint16_t *)__string_678);
-      }
-    }
-
-    StringBuilder_append(code, (const uint16_t *)__string_679);
-    TurboJsResult_emitBlock(__this, Node_functionBody(node));
-    StringBuilder_append(code, needsSemicolon ? (const uint16_t *)__string_680 : (const uint16_t *)__string_681);
-    TurboJsResult_emitNewlineAfter(__this, node);
-  }
-
-  else if (node->kind == 16) {
-    TurboJsResult_emitNewlineBefore(__this, node);
-    TurboJsResult_emitIndent(__this);
-
-    while (1) {
-      StringBuilder_append(code, (const uint16_t *)__string_682_if);
-      TurboJsResult_emitExpression(__this, Node_ifValue(node), 0);
-      StringBuilder_append(code, (const uint16_t *)__string_683);
-      TurboJsResult_emitBlock(__this, Node_ifTrue(node));
-      struct Node *no = Node_ifFalse(node);
-
-      if (no == NULL) {
-        StringBuilder_appendChar(code, 10);
-
-        break;
-      }
-
-      StringBuilder_append(code, (const uint16_t *)__string_684);
-      TurboJsResult_emitIndent(__this);
-      StringBuilder_append(code, (const uint16_t *)__string_685_else);
-
-      if (no->firstChild == NULL || no->firstChild != no->lastChild || no->firstChild->kind != 16) {
-        TurboJsResult_emitBlock(__this, no);
-        StringBuilder_appendChar(code, 10);
-
-        break;
-      }
-
-      node = no->firstChild;
-    }
-
-    TurboJsResult_emitNewlineAfter(__this, node);
-  }
-
-  else if (node->kind == 20) {
-    TurboJsResult_emitNewlineBefore(__this, node);
-    TurboJsResult_emitIndent(__this);
-    StringBuilder_append(code, (const uint16_t *)__string_686_while);
-    TurboJsResult_emitExpression(__this, Node_whileValue(node), 0);
-    StringBuilder_append(code, (const uint16_t *)__string_687);
-    TurboJsResult_emitBlock(__this, Node_whileBody(node));
-    StringBuilder_appendChar(code, 10);
-    TurboJsResult_emitNewlineAfter(__this, node);
-  }
-
-  else if (node->kind == 8) {
-    TurboJsResult_emitNewlineBefore(__this, node);
-    TurboJsResult_emitIndent(__this);
-    StringBuilder_append(code, (const uint16_t *)__string_688_break);
-    TurboJsResult_emitNewlineAfter(__this, node);
-  }
-
-  else if (node->kind == 11) {
-    TurboJsResult_emitNewlineBefore(__this, node);
-    TurboJsResult_emitIndent(__this);
-    StringBuilder_append(code, (const uint16_t *)__string_689_continue);
-    TurboJsResult_emitNewlineAfter(__this, node);
-  }
-
-  else if (node->kind == 14) {
-    TurboJsResult_emitNewlineBefore(__this, node);
-    TurboJsResult_emitIndent(__this);
-    TurboJsResult_emitExpression(__this, Node_expressionValue(node), 0);
-    StringBuilder_append(code, (const uint16_t *)__string_690);
-    TurboJsResult_emitNewlineAfter(__this, node);
-  }
-
-  else if (node->kind == 12) {
-  }
-
-  else if (node->kind == 17) {
-    struct Node *value = Node_returnValue(node);
-    TurboJsResult_emitNewlineBefore(__this, node);
-    TurboJsResult_emitIndent(__this);
-
-    if (value != NULL) {
-      StringBuilder_append(code, (const uint16_t *)__string_691_return);
-      TurboJsResult_emitExpression(__this, value, 0);
-      StringBuilder_append(code, (const uint16_t *)__string_692);
-    }
-
-    else {
-      StringBuilder_append(code, (const uint16_t *)__string_693_return);
-    }
-
-    TurboJsResult_emitNewlineAfter(__this, node);
-  }
-
-  else if (node->kind == 7) {
-    if (node->parent->kind == 7) {
-      TurboJsResult_emitStatements(__this, node->firstChild);
-    }
-
-    else {
-      TurboJsResult_emitNewlineBefore(__this, node);
-      TurboJsResult_emitIndent(__this);
-      TurboJsResult_emitBlock(__this, node);
-      StringBuilder_appendChar(code, 10);
-      TurboJsResult_emitNewlineAfter(__this, node);
-    }
-  }
-
-  else if (node->kind == 19) {
-    TurboJsResult_emitNewlineBefore(__this, node);
-    TurboJsResult_emitIndent(__this);
-    StringBuilder_append(code, (const uint16_t *)__string_694_var);
-    struct Node *child = node->firstChild;
-
-    while (child != NULL) {
-      struct Node *value = Node_variableValue(child);
-      TurboJsResult_emitSymbolName(__this, child->symbol);
-      child = child->nextSibling;
-
-      if (child != NULL) {
-        StringBuilder_append(code, (const uint16_t *)__string_695);
-      }
-
-      assert(value != NULL);
-      StringBuilder_append(code, (const uint16_t *)__string_696);
-      TurboJsResult_emitExpression(__this, value, 0);
-    }
-
-    StringBuilder_append(code, (const uint16_t *)__string_697);
-    TurboJsResult_emitNewlineAfter(__this, node);
-  }
-
-  else if (node->kind == 9) {
-    if (!Node_isDeclare(node)) {
-      TurboJsResult_emitNewlineBefore(__this, node);
-      TurboJsResult_emitIndent(__this);
-      StringBuilder_append(code, (const uint16_t *)__string_698_function);
-      TurboJsResult_emitSymbolName(__this, node->symbol);
-      StringBuilder_append(code, (const uint16_t *)__string_699);
-      __this->indent = __this->indent + 1;
-      struct Node *argument = node->firstChild;
-
-      while (argument != NULL) {
-        if (argument->kind == 6) {
-          TurboJsResult_emitIndent(__this);
-          StringBuilder_append(code, (const uint16_t *)__string_700_this);
-          TurboJsResult_emitSymbolName(__this, argument->symbol);
-          StringBuilder_append(code, (const uint16_t *)__string_701);
-          TurboJsResult_emitExpression(__this, Node_variableValue(argument), 0);
-          StringBuilder_append(code, (const uint16_t *)__string_702);
-        }
-
-        argument = argument->nextSibling;
-      }
-
-      __this->indent = __this->indent - 1;
-      TurboJsResult_emitIndent(__this);
-      StringBuilder_append(code, (const uint16_t *)__string_703);
-      TurboJsResult_emitNewlineAfter(__this, node);
-    }
-
-    struct Node *child = node->firstChild;
-
-    while (child != NULL) {
-      if (child->kind == 15) {
-        TurboJsResult_emitStatement(__this, child);
-      }
-
-      child = child->nextSibling;
-    }
-  }
-
-  else if (node->kind == 13) {
-    if (Node_isExtern(node)) {
-      TurboJsResult_emitNewlineBefore(__this, node);
-      TurboJsResult_emitIndent(__this);
-      StringBuilder_append(code, (const uint16_t *)__string_704___extern);
-      TurboJsResult_emitSymbolName(__this, node->symbol);
-      StringBuilder_append(code, (const uint16_t *)__string_705);
-      __this->indent = __this->indent + 1;
-      struct Node *child = node->firstChild;
-
-      while (child != NULL) {
-        assert(child->kind == 6);
-        TurboJsResult_emitIndent(__this);
-        TurboJsResult_emitSymbolName(__this, child->symbol);
-        StringBuilder_append(code, (const uint16_t *)__string_706);
-        StringBuilder_append(code, int_toString(child->symbol->offset));
-        child = child->nextSibling;
-        StringBuilder_append(code, child != NULL ? (const uint16_t *)__string_707 : (const uint16_t *)__string_708);
-      }
-
-      __this->indent = __this->indent - 1;
-      TurboJsResult_emitIndent(__this);
-      StringBuilder_append(code, (const uint16_t *)__string_709);
-      TurboJsResult_emitNewlineAfter(__this, node);
-    }
-  }
-
-  else if (node->kind == 10) {
-  }
-
-  else {
-    assert(0);
-  }
-}
-
-static void turboJsEmit(struct Compiler *compiler) {
-  struct StringBuilder *code = StringBuilder_new();
-  struct JsResult *result = calloc(1, sizeof(struct JsResult));
-  result->context = compiler->context;
-  result->code = code;
-  StringBuilder_append(code, (const uint16_t *)__string_710_function___declare___extern);
-  result->indent = 1;
-  JsResult_emitStatements(result, compiler->global->firstChild);
-
-  if (result->foundMultiply) {
-    StringBuilder_appendChar(code, 10);
-    JsResult_emitIndent(result);
-    StringBuilder_append(code, (const uint16_t *)__string_711_var___imul_Math_imul_functi);
-    result->indent = 2;
-    JsResult_emitIndent(result);
-    StringBuilder_append(code, (const uint16_t *)__string_712_return_a_b_16_16);
-    result->indent = 1;
-    JsResult_emitIndent(result);
-    StringBuilder_append(code, (const uint16_t *)__string_713);
-  }
-
-  StringBuilder_append(code, (const uint16_t *)__string_714);
-  JsResult_emitIndent(result);
-  StringBuilder_append(code, (const uint16_t *)__string_715_typeof_global_undefined);
-  JsResult_emitIndent(result);
-  StringBuilder_append(code, (const uint16_t *)__string_716_typeof_exports_undefined);
-  StringBuilder_append(code, (const uint16_t *)__string_717);
-  compiler->outputJS = StringBuilder_finish(code);
-}
-
 static uint8_t Type_isClass(struct Type *__this) {
   return __this->symbol != NULL && __this->symbol->kind == 0;
 }
@@ -10746,16 +9914,19 @@ static void WasmModule_emitModule(struct WasmModule *__this, struct ByteArray *a
   ByteArray_append32(array, 13);
   WasmModule_emitSignatures(__this, array);
   WasmModule_emitImportTable(__this, array);
-  WasmModule_emitFunctionSignatures(__this, array);
+  WasmModule_emitFunctionDeclarations(__this, array);
+  WasmModule_emitTables(__this, array);
   WasmModule_emitMemory(__this, array);
+  WasmModule_emitGlobalDeclarations(__this, array);
   WasmModule_emitExportTable(__this, array);
+  WasmModule_emitStartFunctionDeclaration(__this, array);
+  WasmModule_emitElements(__this, array);
   WasmModule_emitFunctionBodies(__this, array);
   WasmModule_emitDataSegments(__this, array);
-  WasmModule_emitNames(__this, array);
 }
 
 static void WasmModule_emitSignatures(struct WasmModule *__this, struct ByteArray *array) {
-  int32_t section = wasmStartSection(array, 1, (const uint16_t *)__string_718_signatures);
+  int32_t section = wasmStartSection(array, 1, (const uint16_t *)__string_622_signatures);
   wasmWriteVarUnsigned(array, __this->signatureCount);
   struct WasmSignature *signature = __this->firstSignature;
 
@@ -10768,13 +9939,24 @@ static void WasmModule_emitSignatures(struct WasmModule *__this, struct ByteArra
       type = type->next;
     }
 
+    wasmWriteVarUnsigned(array, 96);
     wasmWriteVarUnsigned(array, count);
-    wasmWriteVarUnsigned(array, (int32_t)signature->returnType->id);
     type = signature->argumentTypes;
 
     while (type != NULL) {
       wasmWriteVarUnsigned(array, (int32_t)type->id);
       type = type->next;
+    }
+
+    int32_t returnTypeId = signature->returnType->id;
+
+    if (returnTypeId > 0) {
+      wasmWriteVarUnsigned(array, 1);
+      wasmWriteVarUnsigned(array, (int32_t)signature->returnType->id);
+    }
+
+    else {
+      wasmWriteVarUnsigned(array, 0);
     }
 
     signature = signature->next;
@@ -10788,7 +9970,7 @@ static void WasmModule_emitImportTable(struct WasmModule *__this, struct ByteArr
     return;
   }
 
-  int32_t section = wasmStartSection(array, 2, (const uint16_t *)__string_719_import_table);
+  int32_t section = wasmStartSection(array, 2, (const uint16_t *)__string_623_import_table);
   wasmWriteVarUnsigned(array, __this->importCount);
   struct WasmImport *current = __this->firstImport;
 
@@ -10802,12 +9984,12 @@ static void WasmModule_emitImportTable(struct WasmModule *__this, struct ByteArr
   wasmFinishSection(array, section);
 }
 
-static void WasmModule_emitFunctionSignatures(struct WasmModule *__this, struct ByteArray *array) {
+static void WasmModule_emitFunctionDeclarations(struct WasmModule *__this, struct ByteArray *array) {
   if (__this->firstFunction == NULL) {
     return;
   }
 
-  int32_t section = wasmStartSection(array, 3, (const uint16_t *)__string_720_function_signatures);
+  int32_t section = wasmStartSection(array, 3, (const uint16_t *)__string_624_function_declarations);
   wasmWriteVarUnsigned(array, __this->functionCount);
   struct WasmFunction *fn = __this->firstFunction;
 
@@ -10819,12 +10001,23 @@ static void WasmModule_emitFunctionSignatures(struct WasmModule *__this, struct 
   wasmFinishSection(array, section);
 }
 
+static void WasmModule_emitTables(struct WasmModule *__this, struct ByteArray *array) {
+}
+
 static void WasmModule_emitMemory(struct WasmModule *__this, struct ByteArray *array) {
-  int32_t section = wasmStartSection(array, 5, (const uint16_t *)__string_721_memory);
-  wasmWriteVarUnsigned(array, 256);
-  wasmWriteVarUnsigned(array, 256);
+  int32_t section = wasmStartSection(array, 5, (const uint16_t *)__string_625_memory);
   wasmWriteVarUnsigned(array, 1);
+  wasmWriteVarUnsigned(array, 0 ? 1 : 0);
+  wasmWriteVarUnsigned(array, 256);
+
+  if (0) {
+    wasmWriteVarUnsigned(array, 1073741824);
+  }
+
   wasmFinishSection(array, section);
+}
+
+static void WasmModule_emitGlobalDeclarations(struct WasmModule *__this, struct ByteArray *array) {
 }
 
 static void WasmModule_emitExportTable(struct WasmModule *__this, struct ByteArray *array) {
@@ -10843,15 +10036,16 @@ static void WasmModule_emitExportTable(struct WasmModule *__this, struct ByteArr
     return;
   }
 
-  int32_t section = wasmStartSection(array, 7, (const uint16_t *)__string_722_export_table);
+  int32_t section = wasmStartSection(array, 7, (const uint16_t *)__string_626_export_table);
   wasmWriteVarUnsigned(array, exportedCount);
   int32_t i = 0;
   fn = __this->firstFunction;
 
   while (fn != NULL) {
     if (fn->isExported) {
-      wasmWriteVarUnsigned(array, i);
       wasmWriteLengthPrefixedASCII(array, fn->symbol->name);
+      wasmWriteVarUnsigned(array, 0);
+      wasmWriteVarUnsigned(array, i);
     }
 
     fn = fn->next;
@@ -10861,12 +10055,18 @@ static void WasmModule_emitExportTable(struct WasmModule *__this, struct ByteArr
   wasmFinishSection(array, section);
 }
 
+static void WasmModule_emitStartFunctionDeclaration(struct WasmModule *__this, struct ByteArray *array) {
+}
+
+static void WasmModule_emitElements(struct WasmModule *__this, struct ByteArray *array) {
+}
+
 static void WasmModule_emitFunctionBodies(struct WasmModule *__this, struct ByteArray *array) {
   if (__this->firstFunction == NULL) {
     return;
   }
 
-  int32_t section = wasmStartSection(array, 10, (const uint16_t *)__string_723_function_bodies);
+  int32_t section = wasmStartSection(array, 10, (const uint16_t *)__string_627_function_bodies);
   wasmWriteVarUnsigned(array, __this->functionCount);
   struct WasmFunction *fn = __this->firstFunction;
 
@@ -10877,7 +10077,7 @@ static void WasmModule_emitFunctionBodies(struct WasmModule *__this, struct Byte
     if (fn->intLocalCount > 0) {
       wasmWriteVarUnsigned(array, 1);
       wasmWriteVarUnsigned(array, fn->intLocalCount);
-      ByteArray_append(array, 1);
+      ByteArray_append(array, 127);
     }
 
     else {
@@ -10891,6 +10091,7 @@ static void WasmModule_emitFunctionBodies(struct WasmModule *__this, struct Byte
       child = child->nextSibling;
     }
 
+    wasmWriteVarUnsigned(array, 11);
     wasmPatchVarUnsigned(array, bodyLength, ByteArray_length(array) - bodyLength - 5, -1);
     fn = fn->next;
   }
@@ -10905,8 +10106,9 @@ static void WasmModule_emitDataSegments(struct WasmModule *__this, struct ByteAr
   int32_t initialHeapPointer = alignToNextMultipleOf(initializerLength + 8, 8);
   ByteArray_set32(memoryInitializer, __this->currentHeapPointer, initialHeapPointer);
   ByteArray_set32(memoryInitializer, __this->originalHeapPointer, initialHeapPointer);
-  int32_t section = wasmStartSection(array, 11, (const uint16_t *)__string_724_data_segments);
+  int32_t section = wasmStartSection(array, 11, (const uint16_t *)__string_628_data_segments);
   wasmWriteVarUnsigned(array, 1);
+  wasmWriteVarUnsigned(array, 0);
   wasmWriteVarUnsigned(array, 8);
   wasmWriteVarUnsigned(array, initializerLength);
   int32_t i = 0;
@@ -10920,7 +10122,7 @@ static void WasmModule_emitDataSegments(struct WasmModule *__this, struct ByteAr
 }
 
 static void WasmModule_emitNames(struct WasmModule *__this, struct ByteArray *array) {
-  int32_t section = wasmStartSection(array, 0, (const uint16_t *)__string_725_names);
+  int32_t section = wasmStartSection(array, 0, (const uint16_t *)__string_629_names);
   wasmWriteVarUnsigned(array, __this->functionCount);
   struct WasmFunction *fn = __this->firstFunction;
 
@@ -10976,12 +10178,12 @@ static void WasmModule_prepareToEmit(struct WasmModule *__this, struct Node *nod
         assert(0);
       }
 
-      if (string_op_equals(symbol->name, (const uint16_t *)__string_726_currentHeapPointer)) {
+      if (string_op_equals(symbol->name, (const uint16_t *)__string_630_currentHeapPointer)) {
         assert(__this->currentHeapPointer == -1);
         __this->currentHeapPointer = symbol->offset;
       }
 
-      else if (string_op_equals(symbol->name, (const uint16_t *)__string_727_originalHeapPointer)) {
+      else if (string_op_equals(symbol->name, (const uint16_t *)__string_631_originalHeapPointer)) {
         assert(__this->originalHeapPointer == -1);
         __this->originalHeapPointer = symbol->offset;
       }
@@ -11016,7 +10218,7 @@ static void WasmModule_prepareToEmit(struct WasmModule *__this, struct Node *nod
     struct Symbol *symbol = node->symbol;
 
     if (body == NULL) {
-      const uint16_t *moduleName = symbol->kind == 4 ? Symbol_parent(symbol)->name : (const uint16_t *)__string_728_global;
+      const uint16_t *moduleName = symbol->kind == 4 ? Symbol_parent(symbol)->name : (const uint16_t *)__string_632_global;
       symbol->offset = __this->importCount;
       WasmModule_allocateImport(__this, signatureIndex, moduleName, symbol->name);
       node = node->nextSibling;
@@ -11027,7 +10229,7 @@ static void WasmModule_prepareToEmit(struct WasmModule *__this, struct Node *nod
     symbol->offset = __this->functionCount;
     struct WasmFunction *fn = WasmModule_allocateFunction(__this, symbol, signatureIndex);
 
-    if (symbol->kind == 5 && string_op_equals(symbol->name, (const uint16_t *)__string_729_malloc)) {
+    if (symbol->kind == 5 && string_op_equals(symbol->name, (const uint16_t *)__string_633_malloc)) {
       assert(__this->mallocFunctionIndex == -1);
       __this->mallocFunctionIndex = symbol->offset;
     }
@@ -11568,7 +10770,7 @@ static int32_t WasmModule_getWasmType(struct WasmModule *__this, struct Type *ty
   struct CheckContext *context = __this->context;
 
   if (type == context->boolType || Type_isInteger(type) || Type_isReference(type)) {
-    return 1;
+    return 127;
   }
 
   if (type == context->voidType) {
@@ -11665,11 +10867,11 @@ static int32_t wasmStartSection(struct ByteArray *array, int32_t id, const uint1
 }
 
 static void wasmFinishSection(struct ByteArray *array, int32_t offset) {
-  wasmPatchVarUnsigned(array, offset, ByteArray_length(array) - offset - 5, -1);
+  wasmPatchVarUnsigned(array, offset + 1, ByteArray_length(array) - offset - 6, -1);
 }
 
 static struct WasmWrappedType *wasmWrapType(int32_t id) {
-  assert(id == 0 || id == 1);
+  assert(id == 0 || id == 127);
   struct WasmWrappedType *type = calloc(1, sizeof(struct WasmWrappedType));
   type->id = id;
 
@@ -11693,7 +10895,6 @@ static void wasmAssignLocalVariableOffsets(struct Node *node, struct WasmSharedO
 }
 
 static void wasmEmit(struct Compiler *compiler) {
-  log = compiler->log;
   struct WasmModule *module = calloc(1, sizeof(struct WasmModule));
   module->context = compiler->context;
   module->memoryInitializer = calloc(1, sizeof(struct ByteArray));
