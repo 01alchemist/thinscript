@@ -1884,7 +1884,7 @@ static void wasmPatchVarUnsigned(struct ByteArray *array, int32_t offset, int32_
 static void wasmWriteVarUnsigned(struct ByteArray *array, int32_t value);
 static void wasmWriteVarSigned(struct ByteArray *array, int32_t value);
 static void wasmWriteLengthPrefixedASCII(struct ByteArray *array, const uint16_t *value);
-static int32_t wasmStartSection(struct ByteArray *array, const uint16_t *name);
+static int32_t wasmStartSection(struct ByteArray *array, int32_t id, const uint16_t *name);
 static void wasmFinishSection(struct ByteArray *array, int32_t offset);
 static struct WasmWrappedType *wasmWrapType(int32_t id);
 static void wasmAssignLocalVariableOffsets(struct Node *node, struct WasmSharedOffset *shared);
@@ -1893,6 +1893,7 @@ static void wasmEmit(struct Compiler *compiler);
 static struct CommandLineArgument *firstArgument = NULL;
 static struct CommandLineArgument *lastArgument = NULL;
 static struct StringBuilder *stringBuilderPool = NULL;
+static struct Log *log = NULL;
 
 static const uint16_t *ushort_toString(uint16_t __this) {
   return uint_toString((uint32_t)__this);
@@ -10754,7 +10755,7 @@ static void WasmModule_emitModule(struct WasmModule *__this, struct ByteArray *a
 }
 
 static void WasmModule_emitSignatures(struct WasmModule *__this, struct ByteArray *array) {
-  int32_t section = wasmStartSection(array, (const uint16_t *)__string_718_signatures);
+  int32_t section = wasmStartSection(array, 1, (const uint16_t *)__string_718_signatures);
   wasmWriteVarUnsigned(array, __this->signatureCount);
   struct WasmSignature *signature = __this->firstSignature;
 
@@ -10787,7 +10788,7 @@ static void WasmModule_emitImportTable(struct WasmModule *__this, struct ByteArr
     return;
   }
 
-  int32_t section = wasmStartSection(array, (const uint16_t *)__string_719_import_table);
+  int32_t section = wasmStartSection(array, 2, (const uint16_t *)__string_719_import_table);
   wasmWriteVarUnsigned(array, __this->importCount);
   struct WasmImport *current = __this->firstImport;
 
@@ -10806,7 +10807,7 @@ static void WasmModule_emitFunctionSignatures(struct WasmModule *__this, struct 
     return;
   }
 
-  int32_t section = wasmStartSection(array, (const uint16_t *)__string_720_function_signatures);
+  int32_t section = wasmStartSection(array, 3, (const uint16_t *)__string_720_function_signatures);
   wasmWriteVarUnsigned(array, __this->functionCount);
   struct WasmFunction *fn = __this->firstFunction;
 
@@ -10819,7 +10820,7 @@ static void WasmModule_emitFunctionSignatures(struct WasmModule *__this, struct 
 }
 
 static void WasmModule_emitMemory(struct WasmModule *__this, struct ByteArray *array) {
-  int32_t section = wasmStartSection(array, (const uint16_t *)__string_721_memory);
+  int32_t section = wasmStartSection(array, 5, (const uint16_t *)__string_721_memory);
   wasmWriteVarUnsigned(array, 256);
   wasmWriteVarUnsigned(array, 256);
   wasmWriteVarUnsigned(array, 1);
@@ -10842,7 +10843,7 @@ static void WasmModule_emitExportTable(struct WasmModule *__this, struct ByteArr
     return;
   }
 
-  int32_t section = wasmStartSection(array, (const uint16_t *)__string_722_export_table);
+  int32_t section = wasmStartSection(array, 7, (const uint16_t *)__string_722_export_table);
   wasmWriteVarUnsigned(array, exportedCount);
   int32_t i = 0;
   fn = __this->firstFunction;
@@ -10865,7 +10866,7 @@ static void WasmModule_emitFunctionBodies(struct WasmModule *__this, struct Byte
     return;
   }
 
-  int32_t section = wasmStartSection(array, (const uint16_t *)__string_723_function_bodies);
+  int32_t section = wasmStartSection(array, 10, (const uint16_t *)__string_723_function_bodies);
   wasmWriteVarUnsigned(array, __this->functionCount);
   struct WasmFunction *fn = __this->firstFunction;
 
@@ -10904,7 +10905,7 @@ static void WasmModule_emitDataSegments(struct WasmModule *__this, struct ByteAr
   int32_t initialHeapPointer = alignToNextMultipleOf(initializerLength + 8, 8);
   ByteArray_set32(memoryInitializer, __this->currentHeapPointer, initialHeapPointer);
   ByteArray_set32(memoryInitializer, __this->originalHeapPointer, initialHeapPointer);
-  int32_t section = wasmStartSection(array, (const uint16_t *)__string_724_data_segments);
+  int32_t section = wasmStartSection(array, 11, (const uint16_t *)__string_724_data_segments);
   wasmWriteVarUnsigned(array, 1);
   wasmWriteVarUnsigned(array, 8);
   wasmWriteVarUnsigned(array, initializerLength);
@@ -10919,7 +10920,7 @@ static void WasmModule_emitDataSegments(struct WasmModule *__this, struct ByteAr
 }
 
 static void WasmModule_emitNames(struct WasmModule *__this, struct ByteArray *array) {
-  int32_t section = wasmStartSection(array, (const uint16_t *)__string_725_names);
+  int32_t section = wasmStartSection(array, 0, (const uint16_t *)__string_725_names);
   wasmWriteVarUnsigned(array, __this->functionCount);
   struct WasmFunction *fn = __this->firstFunction;
 
@@ -11651,10 +11652,14 @@ static void wasmWriteLengthPrefixedASCII(struct ByteArray *array, const uint16_t
   }
 }
 
-static int32_t wasmStartSection(struct ByteArray *array, const uint16_t *name) {
+static int32_t wasmStartSection(struct ByteArray *array, int32_t id, const uint16_t *name) {
   int32_t offset = ByteArray_length(array);
+  wasmWriteVarUnsigned(array, id);
   wasmWriteVarUnsigned(array, -1);
-  wasmWriteLengthPrefixedASCII(array, name);
+
+  if (id == 0) {
+    wasmWriteLengthPrefixedASCII(array, name);
+  }
 
   return offset;
 }
@@ -11688,6 +11693,7 @@ static void wasmAssignLocalVariableOffsets(struct Node *node, struct WasmSharedO
 }
 
 static void wasmEmit(struct Compiler *compiler) {
+  log = compiler->log;
   struct WasmModule *module = calloc(1, sizeof(struct WasmModule));
   module->context = compiler->context;
   module->memoryInitializer = calloc(1, sizeof(struct ByteArray));

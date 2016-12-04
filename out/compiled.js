@@ -8615,6 +8615,8 @@
     return symbol !== null && (symbol.kind === 0 || symbol.kind === 3);
   };
 
+  var log = null;
+
   function WasmWrappedType() {
     this.id = 0;
     this.next = null;
@@ -8782,7 +8784,7 @@
   };
 
   WasmModule.prototype.emitSignatures = function(array) {
-    var section = wasmStartSection(array, "signatures");
+    var section = wasmStartSection(array, 1, "signatures");
     wasmWriteVarUnsigned(array, this.signatureCount);
     var signature = this.firstSignature;
 
@@ -8815,7 +8817,7 @@
       return;
     }
 
-    var section = wasmStartSection(array, "import_table");
+    var section = wasmStartSection(array, 2, "import_table");
     wasmWriteVarUnsigned(array, this.importCount);
     var current = this.firstImport;
 
@@ -8834,7 +8836,7 @@
       return;
     }
 
-    var section = wasmStartSection(array, "function_signatures");
+    var section = wasmStartSection(array, 3, "function_signatures");
     wasmWriteVarUnsigned(array, this.functionCount);
     var fn = this.firstFunction;
 
@@ -8847,7 +8849,7 @@
   };
 
   WasmModule.prototype.emitMemory = function(array) {
-    var section = wasmStartSection(array, "memory");
+    var section = wasmStartSection(array, 5, "memory");
     wasmWriteVarUnsigned(array, 256);
     wasmWriteVarUnsigned(array, 256);
     wasmWriteVarUnsigned(array, 1);
@@ -8870,7 +8872,7 @@
       return;
     }
 
-    var section = wasmStartSection(array, "export_table");
+    var section = wasmStartSection(array, 7, "export_table");
     wasmWriteVarUnsigned(array, exportedCount);
     var i = 0;
     fn = this.firstFunction;
@@ -8893,7 +8895,7 @@
       return;
     }
 
-    var section = wasmStartSection(array, "function_bodies");
+    var section = wasmStartSection(array, 10, "function_bodies");
     wasmWriteVarUnsigned(array, this.functionCount);
     var fn = this.firstFunction;
 
@@ -8932,7 +8934,7 @@
     var initialHeapPointer = alignToNextMultipleOf(initializerLength + 8 | 0, 8);
     ByteArray_set32(memoryInitializer, this.currentHeapPointer, initialHeapPointer);
     ByteArray_set32(memoryInitializer, this.originalHeapPointer, initialHeapPointer);
-    var section = wasmStartSection(array, "data_segments");
+    var section = wasmStartSection(array, 11, "data_segments");
     wasmWriteVarUnsigned(array, 1);
     wasmWriteVarUnsigned(array, 8);
     wasmWriteVarUnsigned(array, initializerLength);
@@ -8947,7 +8949,7 @@
   };
 
   WasmModule.prototype.emitNames = function(array) {
-    var section = wasmStartSection(array, "names");
+    var section = wasmStartSection(array, 0, "names");
     wasmWriteVarUnsigned(array, this.functionCount);
     var fn = this.firstFunction;
 
@@ -9679,10 +9681,14 @@
     }
   }
 
-  function wasmStartSection(array, name) {
+  function wasmStartSection(array, id, name) {
     var offset = array.length();
+    wasmWriteVarUnsigned(array, id);
     wasmWriteVarUnsigned(array, -1);
-    wasmWriteLengthPrefixedASCII(array, name);
+
+    if (id === 0) {
+      wasmWriteLengthPrefixedASCII(array, name);
+    }
 
     return offset;
   }
@@ -9721,6 +9727,7 @@
   }
 
   function wasmEmit(compiler) {
+    log = compiler.log;
     var module = new WasmModule();
     module.context = compiler.context;
     module.memoryInitializer = new ByteArray();

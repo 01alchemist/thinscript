@@ -180,12 +180,28 @@ const WASM_VERSION = 0x0d;
 const WASM_SIZE_IN_PAGES = 256;
 const WASM_MEMORY_INITIALIZER_BASE = 8; // Leave space for "null"
 
+var log:Log;
+
 enum WasmType {
   VOID = 0,
   I32 = 1,
   I64 = 2,
   F32 = 3,
   F64 = 4,
+}
+
+enum WasmSection {
+    Type = 1, //Function signature declarations
+    Import = 2, //Import declarations
+    Function = 3, //Function declarations
+    Table = 4, //Indirect function table and other tables
+    Memory = 5, //Memory attributes
+    Global = 6, //Global declarations
+    Export = 7, //Exports
+    Start = 8, //Start function declaration
+    Element = 9, //Elements section
+    Code = 10, //Function bodies (code)
+    Data = 11, //Data segments
 }
 
 class WasmWrappedType {
@@ -342,8 +358,8 @@ class WasmModule {
     this.emitNames(array);
   }
 
-  emitSignatures(array: ByteArray): void {
-    var section = wasmStartSection(array, "signatures");
+  emitSignatures(array: ByteArray): void{
+    var section = wasmStartSection(array, WasmSection.Type, "signatures");
     wasmWriteVarUnsigned(array, this.signatureCount);
 
     var signature = this.firstSignature;
@@ -376,7 +392,7 @@ class WasmModule {
       return;
     }
 
-    var section = wasmStartSection(array, "import_table");
+    var section = wasmStartSection(array, WasmSection.Import, "import_table");
     wasmWriteVarUnsigned(array, this.importCount);
 
     var current = this.firstImport;
@@ -395,7 +411,7 @@ class WasmModule {
       return;
     }
 
-    var section = wasmStartSection(array, "function_signatures");
+    var section = wasmStartSection(array, WasmSection.Function, "function_signatures");
     wasmWriteVarUnsigned(array, this.functionCount);
 
     var fn = this.firstFunction;
@@ -408,7 +424,7 @@ class WasmModule {
   }
 
   emitMemory(array: ByteArray): void {
-    var section = wasmStartSection(array, "memory");
+    var section = wasmStartSection(array, WasmSection.Memory, "memory");
     wasmWriteVarUnsigned(array, WASM_SIZE_IN_PAGES);
     wasmWriteVarUnsigned(array, WASM_SIZE_IN_PAGES);
     wasmWriteVarUnsigned(array, 1); // The memory array is exported
@@ -428,7 +444,7 @@ class WasmModule {
       return;
     }
 
-    var section = wasmStartSection(array, "export_table");
+    var section = wasmStartSection(array, WasmSection.Export, "export_table");
     wasmWriteVarUnsigned(array, exportedCount);
 
     var i = 0;
@@ -450,7 +466,7 @@ class WasmModule {
       return;
     }
 
-    var section = wasmStartSection(array, "function_bodies");
+    var section = wasmStartSection(array, WasmSection.Code, "function_bodies");
     wasmWriteVarUnsigned(array, this.functionCount);
 
     var fn = this.firstFunction;
@@ -489,7 +505,7 @@ class WasmModule {
     ByteArray_set32(memoryInitializer, this.currentHeapPointer, initialHeapPointer);
     ByteArray_set32(memoryInitializer, this.originalHeapPointer, initialHeapPointer);
 
-    var section = wasmStartSection(array, "data_segments");
+    var section = wasmStartSection(array, WasmSection.Data, "data_segments");
 
     // This only writes one single section containing everything
     wasmWriteVarUnsigned(array, 1);
@@ -509,7 +525,7 @@ class WasmModule {
   }
 
   emitNames(array: ByteArray): void {
-    var section = wasmStartSection(array, "names");
+    var section = wasmStartSection(array, 0, "names");
     wasmWriteVarUnsigned(array, this.functionCount);
 
     var fn = this.firstFunction;
@@ -1194,10 +1210,13 @@ function wasmWriteLengthPrefixedASCII(array: ByteArray, value: string): void {
   }
 }
 
-function wasmStartSection(array: ByteArray, name: string): int {
+function wasmStartSection(array: ByteArray, id:int, name: string): int {
   var offset = array.length();
-  wasmWriteVarUnsigned(array, ~0); // Section length, will be filled in later
-  wasmWriteLengthPrefixedASCII(array, name);
+  wasmWriteVarUnsigned(array, id);//section code
+  wasmWriteVarUnsigned(array, ~0);//size of this section in bytes, will be filled in later
+  if(id == 0){
+      wasmWriteLengthPrefixedASCII(array, name);
+  }
   return offset;
 }
 
@@ -1233,6 +1252,7 @@ function wasmAssignLocalVariableOffsets(node: Node, shared: WasmSharedOffset): v
 }
 
 function wasmEmit(compiler: Compiler): void {
+    log = compiler.log;
   var module = new WasmModule();
   module.context = compiler.context;
   module.memoryInitializer = new ByteArray();
