@@ -10109,7 +10109,9 @@ static void WasmModule_emitDataSegments(struct WasmModule *__this, struct ByteAr
   int32_t section = wasmStartSection(array, 11, (const uint16_t *)__string_628_data_segments);
   wasmWriteVarUnsigned(array, 1);
   wasmWriteVarUnsigned(array, 0);
-  wasmWriteVarUnsigned(array, 8);
+  wasmWriteVarUnsigned(array, 65);
+  wasmWriteVarUnsigned(array, ByteArray_length(array) + 5);
+  wasmWriteVarUnsigned(array, 11);
   wasmWriteVarUnsigned(array, initializerLength);
   int32_t i = 0;
 
@@ -10260,17 +10262,17 @@ static void WasmModule_emitLoadFromMemory(struct WasmModule *__this, struct Byte
   int32_t sizeOf = Type_variableSizeOf(type, __this->context);
 
   if (sizeOf == 1) {
-    ByteArray_append(array, Type_isUnsigned(type) ? 33 : 32);
+    ByteArray_append(array, Type_isUnsigned(type) ? 45 : 44);
     wasmWriteVarUnsigned(array, 0);
   }
 
   else if (sizeOf == 2) {
-    ByteArray_append(array, Type_isUnsigned(type) ? 35 : 34);
+    ByteArray_append(array, Type_isUnsigned(type) ? 47 : 46);
     wasmWriteVarUnsigned(array, 1);
   }
 
   else if (sizeOf == 4) {
-    ByteArray_append(array, 42);
+    ByteArray_append(array, 40);
     wasmWriteVarUnsigned(array, 2);
   }
 
@@ -10285,7 +10287,7 @@ static void WasmModule_emitLoadFromMemory(struct WasmModule *__this, struct Byte
   }
 
   else {
-    ByteArray_append(array, 10);
+    ByteArray_append(array, 65);
     wasmWriteVarUnsigned(array, 0);
   }
 }
@@ -10294,17 +10296,17 @@ static void WasmModule_emitStoreToMemory(struct WasmModule *__this, struct ByteA
   int32_t sizeOf = Type_variableSizeOf(type, __this->context);
 
   if (sizeOf == 1) {
-    ByteArray_append(array, 46);
+    ByteArray_append(array, 58);
     wasmWriteVarUnsigned(array, 0);
   }
 
   else if (sizeOf == 2) {
-    ByteArray_append(array, 47);
+    ByteArray_append(array, 59);
     wasmWriteVarUnsigned(array, 1);
   }
 
   else if (sizeOf == 4) {
-    ByteArray_append(array, 51);
+    ByteArray_append(array, 54);
     wasmWriteVarUnsigned(array, 2);
   }
 
@@ -10319,7 +10321,7 @@ static void WasmModule_emitStoreToMemory(struct WasmModule *__this, struct ByteA
   }
 
   else {
-    ByteArray_append(array, 10);
+    ByteArray_append(array, 65);
     wasmWriteVarUnsigned(array, 0);
   }
 
@@ -10330,7 +10332,7 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
   assert(!isExpression(node) || node->resolvedType != NULL);
 
   if (node->kind == 7) {
-    ByteArray_append(array, 1);
+    ByteArray_append(array, 2);
     int32_t offset = ByteArray_length(array);
     wasmWriteVarUnsigned(array, -1);
     int32_t count = 0;
@@ -10352,16 +10354,16 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
       return 0;
     }
 
-    ByteArray_append(array, 2);
+    ByteArray_append(array, 3);
     int32_t offset = ByteArray_length(array);
     wasmWriteVarUnsigned(array, -1);
     int32_t count = 0;
 
     if (value->kind != 22) {
-      ByteArray_append(array, 7);
+      ByteArray_append(array, 13);
       wasmWriteVarUnsigned(array, 1);
-      ByteArray_append(array, 0);
-      ByteArray_append(array, 90);
+      ByteArray_append(array, 1);
+      ByteArray_append(array, 69);
       WasmModule_emitNode(__this, array, value);
       count = count + 1;
     }
@@ -10373,9 +10375,9 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
       child = child->nextSibling;
     }
 
-    ByteArray_append(array, 6);
+    ByteArray_append(array, 12);
     wasmWriteVarUnsigned(array, 0);
-    ByteArray_append(array, 0);
+    ByteArray_append(array, 1);
     count = count + 1;
     wasmPatchVarUnsigned(array, offset, count, -1);
   }
@@ -10393,9 +10395,9 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
     }
 
     assert(label > 0);
-    ByteArray_append(array, 6);
+    ByteArray_append(array, 12);
     wasmWriteVarUnsigned(array, label - (node->kind == 8 ? 0 : 1));
-    ByteArray_append(array, 0);
+    ByteArray_append(array, 1);
   }
 
   else if (node->kind == 12) {
@@ -10408,7 +10410,7 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
 
   else if (node->kind == 17) {
     struct Node *value = Node_returnValue(node);
-    ByteArray_append(array, 20);
+    ByteArray_append(array, 15);
 
     if (value != NULL) {
       WasmModule_emitNode(__this, array, value);
@@ -10430,7 +10432,7 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
 
   else if (node->kind == 16) {
     struct Node *branch = Node_ifFalse(node);
-    ByteArray_append(array, branch == NULL ? 3 : 4);
+    ByteArray_append(array, branch == NULL ? 4 : 5);
     WasmModule_emitNode(__this, array, Node_ifValue(node));
     WasmModule_emitNode(__this, array, Node_ifTrue(node));
 
@@ -10440,7 +10442,7 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
   }
 
   else if (node->kind == 26) {
-    ByteArray_append(array, 4);
+    ByteArray_append(array, 5);
     WasmModule_emitNode(__this, array, Node_hookValue(node));
     WasmModule_emitNode(__this, array, Node_hookTrue(node));
     WasmModule_emitNode(__this, array, Node_hookFalse(node));
@@ -10450,7 +10452,7 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
     struct Node *value = Node_variableValue(node);
 
     if (node->symbol->kind == 10) {
-      ByteArray_append(array, 15);
+      ByteArray_append(array, 33);
       wasmWriteVarUnsigned(array, node->symbol->offset);
 
       if (value != NULL) {
@@ -10458,7 +10460,7 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
       }
 
       else {
-        ByteArray_append(array, 10);
+        ByteArray_append(array, 65);
         wasmWriteVarSigned(array, 0);
       }
     }
@@ -10472,7 +10474,7 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
     struct Symbol *symbol = node->symbol;
 
     if (symbol->kind == 6 || symbol->kind == 10) {
-      ByteArray_append(array, 14);
+      ByteArray_append(array, 32);
       wasmWriteVarUnsigned(array, symbol->offset);
     }
 
@@ -10490,17 +10492,17 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
   }
 
   else if (node->kind == 31) {
-    ByteArray_append(array, 10);
+    ByteArray_append(array, 65);
     wasmWriteVarSigned(array, 0);
   }
 
   else if (node->kind == 28 || node->kind == 22) {
-    ByteArray_append(array, 10);
+    ByteArray_append(array, 65);
     wasmWriteVarSigned(array, node->intValue);
   }
 
   else if (node->kind == 34) {
-    ByteArray_append(array, 10);
+    ByteArray_append(array, 65);
     wasmWriteVarSigned(array, node->intValue + 8);
   }
 
@@ -10508,7 +10510,7 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
     struct Node *value = Node_callValue(node);
     struct Symbol *symbol = value->symbol;
     assert(isFunction(symbol->kind));
-    ByteArray_append(array, Node_functionBody(symbol->node) == NULL ? 31 : 18);
+    ByteArray_append(array, Node_functionBody(symbol->node) == NULL ? 31 : 16);
     wasmWriteVarUnsigned(array, symbol->offset);
 
     if (symbol->kind == 4) {
@@ -10526,10 +10528,10 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
   else if (node->kind == 30) {
     struct Node *type = Node_newType(node);
     int32_t size = Type_allocationSizeOf(type->resolvedType, __this->context);
-    ByteArray_append(array, 18);
+    ByteArray_append(array, 16);
     wasmWriteVarUnsigned(array, __this->mallocFunctionIndex);
     assert(size > 0);
-    ByteArray_append(array, 10);
+    ByteArray_append(array, 65);
     wasmWriteVarSigned(array, size);
   }
 
@@ -10538,21 +10540,21 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
   }
 
   else if (node->kind == 40) {
+    ByteArray_append(array, 107);
     ByteArray_append(array, 65);
-    ByteArray_append(array, 10);
     wasmWriteVarSigned(array, 0);
     WasmModule_emitNode(__this, array, Node_unaryValue(node));
   }
 
   else if (node->kind == 38) {
-    ByteArray_append(array, 73);
-    ByteArray_append(array, 10);
+    ByteArray_append(array, 115);
+    ByteArray_append(array, 65);
     wasmWriteVarSigned(array, -1);
     WasmModule_emitNode(__this, array, Node_unaryValue(node));
   }
 
   else if (node->kind == 41) {
-    ByteArray_append(array, 90);
+    ByteArray_append(array, 69);
     WasmModule_emitNode(__this, array, Node_unaryValue(node));
   }
 
@@ -10570,19 +10572,19 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
 
     else if (type == context->sbyteType || type == context->shortType) {
       int32_t shift = 32 - (typeSize << 3);
-      ByteArray_append(array, 76);
-      ByteArray_append(array, 74);
+      ByteArray_append(array, 117);
+      ByteArray_append(array, 116);
       WasmModule_emitNode(__this, array, value);
-      ByteArray_append(array, 10);
+      ByteArray_append(array, 65);
       wasmWriteVarSigned(array, shift);
-      ByteArray_append(array, 10);
+      ByteArray_append(array, 65);
       wasmWriteVarSigned(array, shift);
     }
 
     else if (type == context->byteType || type == context->ushortType) {
-      ByteArray_append(array, 71);
+      ByteArray_append(array, 113);
       WasmModule_emitNode(__this, array, value);
-      ByteArray_append(array, 10);
+      ByteArray_append(array, 65);
       wasmWriteVarSigned(array, (int32_t)Type_integerBitMask(type, __this->context));
     }
 
@@ -10621,7 +10623,7 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
     }
 
     else if (symbol->kind == 6 || symbol->kind == 10) {
-      ByteArray_append(array, 15);
+      ByteArray_append(array, 33);
       wasmWriteVarUnsigned(array, symbol->offset);
       WasmModule_emitNode(__this, array, right);
     }
@@ -10632,17 +10634,17 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
   }
 
   else if (node->kind == 60) {
-    ByteArray_append(array, 4);
+    ByteArray_append(array, 5);
     WasmModule_emitNode(__this, array, Node_binaryLeft(node));
     WasmModule_emitNode(__this, array, Node_binaryRight(node));
-    ByteArray_append(array, 10);
+    ByteArray_append(array, 65);
     wasmWriteVarSigned(array, 0);
   }
 
   else if (node->kind == 61) {
-    ByteArray_append(array, 4);
+    ByteArray_append(array, 5);
     WasmModule_emitNode(__this, array, Node_binaryLeft(node));
-    ByteArray_append(array, 10);
+    ByteArray_append(array, 65);
     wasmWriteVarSigned(array, 1);
     WasmModule_emitNode(__this, array, Node_binaryRight(node));
   }
@@ -10653,7 +10655,7 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
     if (node->kind == 48) {
       struct Node *left = Node_binaryLeft(node);
       struct Node *right = Node_binaryRight(node);
-      ByteArray_append(array, 64);
+      ByteArray_append(array, 106);
       WasmModule_emitNode(__this, array, left);
 
       if (left->resolvedType->pointerTo == NULL) {
@@ -10666,28 +10668,28 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
 
         if (size == 2) {
           if (right->kind == 28) {
-            ByteArray_append(array, 10);
+            ByteArray_append(array, 65);
             wasmWriteVarSigned(array, right->intValue << 1);
           }
 
           else {
-            ByteArray_append(array, 74);
+            ByteArray_append(array, 116);
             WasmModule_emitNode(__this, array, right);
-            ByteArray_append(array, 10);
+            ByteArray_append(array, 65);
             wasmWriteVarSigned(array, 1);
           }
         }
 
         else if (size == 4) {
           if (right->kind == 28) {
-            ByteArray_append(array, 10);
+            ByteArray_append(array, 65);
             wasmWriteVarSigned(array, right->intValue << 2);
           }
 
           else {
-            ByteArray_append(array, 74);
+            ByteArray_append(array, 116);
             WasmModule_emitNode(__this, array, right);
-            ByteArray_append(array, 10);
+            ByteArray_append(array, 65);
             wasmWriteVarSigned(array, 2);
           }
         }
@@ -10699,63 +10701,63 @@ static int32_t WasmModule_emitNode(struct WasmModule *__this, struct ByteArray *
     }
 
     else if (node->kind == 50) {
-      WasmModule_emitBinaryExpression(__this, array, node, 71);
+      WasmModule_emitBinaryExpression(__this, array, node, 113);
     }
 
     else if (node->kind == 51) {
-      WasmModule_emitBinaryExpression(__this, array, node, 72);
+      WasmModule_emitBinaryExpression(__this, array, node, 114);
     }
 
     else if (node->kind == 52) {
-      WasmModule_emitBinaryExpression(__this, array, node, 73);
+      WasmModule_emitBinaryExpression(__this, array, node, 115);
     }
 
     else if (node->kind == 54) {
-      WasmModule_emitBinaryExpression(__this, array, node, 77);
+      WasmModule_emitBinaryExpression(__this, array, node, 70);
     }
 
     else if (node->kind == 62) {
-      WasmModule_emitBinaryExpression(__this, array, node, 66);
+      WasmModule_emitBinaryExpression(__this, array, node, 108);
     }
 
     else if (node->kind == 63) {
-      WasmModule_emitBinaryExpression(__this, array, node, 78);
+      WasmModule_emitBinaryExpression(__this, array, node, 71);
     }
 
     else if (node->kind == 65) {
-      WasmModule_emitBinaryExpression(__this, array, node, 74);
+      WasmModule_emitBinaryExpression(__this, array, node, 116);
     }
 
     else if (node->kind == 67) {
-      WasmModule_emitBinaryExpression(__this, array, node, 65);
+      WasmModule_emitBinaryExpression(__this, array, node, 107);
     }
 
     else if (node->kind == 53) {
-      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 68 : 67);
+      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 110 : 109);
     }
 
     else if (node->kind == 56) {
-      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 85 : 83);
+      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 75 : 74);
     }
 
     else if (node->kind == 57) {
-      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 86 : 84);
+      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 79 : 78);
     }
 
     else if (node->kind == 58) {
-      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 81 : 79);
+      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 73 : 72);
     }
 
     else if (node->kind == 59) {
-      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 82 : 80);
+      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 77 : 76);
     }
 
     else if (node->kind == 64) {
-      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 70 : 69);
+      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 112 : 111);
     }
 
     else if (node->kind == 66) {
-      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 75 : 76);
+      WasmModule_emitBinaryExpression(__this, array, node, isUnsigned ? 118 : 117);
     }
 
     else {

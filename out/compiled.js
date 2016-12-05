@@ -8247,7 +8247,9 @@
     var section = wasmStartSection(array, 11, "data_segments");
     wasmWriteVarUnsigned(array, 1);
     wasmWriteVarUnsigned(array, 0);
-    wasmWriteVarUnsigned(array, 8);
+    wasmWriteVarUnsigned(array, 65);
+    wasmWriteVarUnsigned(array, array.length() + 5 | 0);
+    wasmWriteVarUnsigned(array, 11);
     wasmWriteVarUnsigned(array, initializerLength);
     var i = 0;
 
@@ -8398,17 +8400,17 @@
     var sizeOf = type.variableSizeOf(this.context);
 
     if (sizeOf === 1) {
-      array.append(type.isUnsigned() ? 33 : 32);
+      array.append(type.isUnsigned() ? 45 : 44);
       wasmWriteVarUnsigned(array, 0);
     }
 
     else if (sizeOf === 2) {
-      array.append(type.isUnsigned() ? 35 : 34);
+      array.append(type.isUnsigned() ? 47 : 46);
       wasmWriteVarUnsigned(array, 1);
     }
 
     else if (sizeOf === 4) {
-      array.append(42);
+      array.append(40);
       wasmWriteVarUnsigned(array, 2);
     }
 
@@ -8423,7 +8425,7 @@
     }
 
     else {
-      array.append(10);
+      array.append(65);
       wasmWriteVarUnsigned(array, 0);
     }
   };
@@ -8432,17 +8434,17 @@
     var sizeOf = type.variableSizeOf(this.context);
 
     if (sizeOf === 1) {
-      array.append(46);
+      array.append(58);
       wasmWriteVarUnsigned(array, 0);
     }
 
     else if (sizeOf === 2) {
-      array.append(47);
+      array.append(59);
       wasmWriteVarUnsigned(array, 1);
     }
 
     else if (sizeOf === 4) {
-      array.append(51);
+      array.append(54);
       wasmWriteVarUnsigned(array, 2);
     }
 
@@ -8457,7 +8459,7 @@
     }
 
     else {
-      array.append(10);
+      array.append(65);
       wasmWriteVarUnsigned(array, 0);
     }
 
@@ -8468,7 +8470,7 @@
     __declare.assert(!isExpression(node) || node.resolvedType !== null);
 
     if (node.kind === 7) {
-      array.append(1);
+      array.append(2);
       var offset = array.length();
       wasmWriteVarUnsigned(array, -1);
       var count = 0;
@@ -8490,16 +8492,16 @@
         return 0;
       }
 
-      array.append(2);
+      array.append(3);
       var offset = array.length();
       wasmWriteVarUnsigned(array, -1);
       var count = 0;
 
       if (value.kind !== 22) {
-        array.append(7);
+        array.append(13);
         wasmWriteVarUnsigned(array, 1);
-        array.append(0);
-        array.append(90);
+        array.append(1);
+        array.append(69);
         this.emitNode(array, value);
         count = count + 1 | 0;
       }
@@ -8511,9 +8513,9 @@
         child = child.nextSibling;
       }
 
-      array.append(6);
+      array.append(12);
       wasmWriteVarUnsigned(array, 0);
-      array.append(0);
+      array.append(1);
       count = count + 1 | 0;
       wasmPatchVarUnsigned(array, offset, count, -1);
     }
@@ -8531,9 +8533,9 @@
       }
 
       __declare.assert(label > 0);
-      array.append(6);
+      array.append(12);
       wasmWriteVarUnsigned(array, label - (node.kind === 8 ? 0 : 1) | 0);
-      array.append(0);
+      array.append(1);
     }
 
     else if (node.kind === 12) {
@@ -8546,7 +8548,7 @@
 
     else if (node.kind === 17) {
       var value = node.returnValue();
-      array.append(20);
+      array.append(15);
 
       if (value !== null) {
         this.emitNode(array, value);
@@ -8568,7 +8570,7 @@
 
     else if (node.kind === 16) {
       var branch = node.ifFalse();
-      array.append(branch === null ? 3 : 4);
+      array.append(branch === null ? 4 : 5);
       this.emitNode(array, node.ifValue());
       this.emitNode(array, node.ifTrue());
 
@@ -8578,7 +8580,7 @@
     }
 
     else if (node.kind === 26) {
-      array.append(4);
+      array.append(5);
       this.emitNode(array, node.hookValue());
       this.emitNode(array, node.hookTrue());
       this.emitNode(array, node.hookFalse());
@@ -8588,7 +8590,7 @@
       var value = node.variableValue();
 
       if (node.symbol.kind === 10) {
-        array.append(15);
+        array.append(33);
         wasmWriteVarUnsigned(array, node.symbol.offset);
 
         if (value !== null) {
@@ -8596,7 +8598,7 @@
         }
 
         else {
-          array.append(10);
+          array.append(65);
           wasmWriteVarSigned(array, 0);
         }
       }
@@ -8610,7 +8612,7 @@
       var symbol = node.symbol;
 
       if (symbol.kind === 6 || symbol.kind === 10) {
-        array.append(14);
+        array.append(32);
         wasmWriteVarUnsigned(array, symbol.offset);
       }
 
@@ -8628,17 +8630,17 @@
     }
 
     else if (node.kind === 31) {
-      array.append(10);
+      array.append(65);
       wasmWriteVarSigned(array, 0);
     }
 
     else if (node.kind === 28 || node.kind === 22) {
-      array.append(10);
+      array.append(65);
       wasmWriteVarSigned(array, node.intValue);
     }
 
     else if (node.kind === 34) {
-      array.append(10);
+      array.append(65);
       wasmWriteVarSigned(array, node.intValue + 8 | 0);
     }
 
@@ -8646,7 +8648,7 @@
       var value = node.callValue();
       var symbol = value.symbol;
       __declare.assert(isFunction(symbol.kind));
-      array.append(symbol.node.functionBody() === null ? 31 : 18);
+      array.append(symbol.node.functionBody() === null ? 31 : 16);
       wasmWriteVarUnsigned(array, symbol.offset);
 
       if (symbol.kind === 4) {
@@ -8664,10 +8666,10 @@
     else if (node.kind === 30) {
       var type = node.newType();
       var size = type.resolvedType.allocationSizeOf(this.context);
-      array.append(18);
+      array.append(16);
       wasmWriteVarUnsigned(array, this.mallocFunctionIndex);
       __declare.assert(size > 0);
-      array.append(10);
+      array.append(65);
       wasmWriteVarSigned(array, size);
     }
 
@@ -8676,21 +8678,21 @@
     }
 
     else if (node.kind === 40) {
+      array.append(107);
       array.append(65);
-      array.append(10);
       wasmWriteVarSigned(array, 0);
       this.emitNode(array, node.unaryValue());
     }
 
     else if (node.kind === 38) {
-      array.append(73);
-      array.append(10);
+      array.append(115);
+      array.append(65);
       wasmWriteVarSigned(array, -1);
       this.emitNode(array, node.unaryValue());
     }
 
     else if (node.kind === 41) {
-      array.append(90);
+      array.append(69);
       this.emitNode(array, node.unaryValue());
     }
 
@@ -8708,19 +8710,19 @@
 
       else if (type === context.sbyteType || type === context.shortType) {
         var shift = 32 - (typeSize << 3) | 0;
-        array.append(76);
-        array.append(74);
+        array.append(117);
+        array.append(116);
         this.emitNode(array, value);
-        array.append(10);
+        array.append(65);
         wasmWriteVarSigned(array, shift);
-        array.append(10);
+        array.append(65);
         wasmWriteVarSigned(array, shift);
       }
 
       else if (type === context.byteType || type === context.ushortType) {
-        array.append(71);
+        array.append(113);
         this.emitNode(array, value);
-        array.append(10);
+        array.append(65);
         wasmWriteVarSigned(array, type.integerBitMask(this.context) | 0);
       }
 
@@ -8759,7 +8761,7 @@
       }
 
       else if (symbol.kind === 6 || symbol.kind === 10) {
-        array.append(15);
+        array.append(33);
         wasmWriteVarUnsigned(array, symbol.offset);
         this.emitNode(array, right);
       }
@@ -8770,17 +8772,17 @@
     }
 
     else if (node.kind === 60) {
-      array.append(4);
+      array.append(5);
       this.emitNode(array, node.binaryLeft());
       this.emitNode(array, node.binaryRight());
-      array.append(10);
+      array.append(65);
       wasmWriteVarSigned(array, 0);
     }
 
     else if (node.kind === 61) {
-      array.append(4);
+      array.append(5);
       this.emitNode(array, node.binaryLeft());
-      array.append(10);
+      array.append(65);
       wasmWriteVarSigned(array, 1);
       this.emitNode(array, node.binaryRight());
     }
@@ -8791,7 +8793,7 @@
       if (node.kind === 48) {
         var left = node.binaryLeft();
         var right = node.binaryRight();
-        array.append(64);
+        array.append(106);
         this.emitNode(array, left);
 
         if (left.resolvedType.pointerTo === null) {
@@ -8804,28 +8806,28 @@
 
           if (size === 2) {
             if (right.kind === 28) {
-              array.append(10);
+              array.append(65);
               wasmWriteVarSigned(array, right.intValue << 1);
             }
 
             else {
-              array.append(74);
+              array.append(116);
               this.emitNode(array, right);
-              array.append(10);
+              array.append(65);
               wasmWriteVarSigned(array, 1);
             }
           }
 
           else if (size === 4) {
             if (right.kind === 28) {
-              array.append(10);
+              array.append(65);
               wasmWriteVarSigned(array, right.intValue << 2);
             }
 
             else {
-              array.append(74);
+              array.append(116);
               this.emitNode(array, right);
-              array.append(10);
+              array.append(65);
               wasmWriteVarSigned(array, 2);
             }
           }
@@ -8837,63 +8839,63 @@
       }
 
       else if (node.kind === 50) {
-        this.emitBinaryExpression(array, node, 71);
+        this.emitBinaryExpression(array, node, 113);
       }
 
       else if (node.kind === 51) {
-        this.emitBinaryExpression(array, node, 72);
+        this.emitBinaryExpression(array, node, 114);
       }
 
       else if (node.kind === 52) {
-        this.emitBinaryExpression(array, node, 73);
+        this.emitBinaryExpression(array, node, 115);
       }
 
       else if (node.kind === 54) {
-        this.emitBinaryExpression(array, node, 77);
+        this.emitBinaryExpression(array, node, 70);
       }
 
       else if (node.kind === 62) {
-        this.emitBinaryExpression(array, node, 66);
+        this.emitBinaryExpression(array, node, 108);
       }
 
       else if (node.kind === 63) {
-        this.emitBinaryExpression(array, node, 78);
+        this.emitBinaryExpression(array, node, 71);
       }
 
       else if (node.kind === 65) {
-        this.emitBinaryExpression(array, node, 74);
+        this.emitBinaryExpression(array, node, 116);
       }
 
       else if (node.kind === 67) {
-        this.emitBinaryExpression(array, node, 65);
+        this.emitBinaryExpression(array, node, 107);
       }
 
       else if (node.kind === 53) {
-        this.emitBinaryExpression(array, node, isUnsigned ? 68 : 67);
+        this.emitBinaryExpression(array, node, isUnsigned ? 110 : 109);
       }
 
       else if (node.kind === 56) {
-        this.emitBinaryExpression(array, node, isUnsigned ? 85 : 83);
+        this.emitBinaryExpression(array, node, isUnsigned ? 75 : 74);
       }
 
       else if (node.kind === 57) {
-        this.emitBinaryExpression(array, node, isUnsigned ? 86 : 84);
+        this.emitBinaryExpression(array, node, isUnsigned ? 79 : 78);
       }
 
       else if (node.kind === 58) {
-        this.emitBinaryExpression(array, node, isUnsigned ? 81 : 79);
+        this.emitBinaryExpression(array, node, isUnsigned ? 73 : 72);
       }
 
       else if (node.kind === 59) {
-        this.emitBinaryExpression(array, node, isUnsigned ? 82 : 80);
+        this.emitBinaryExpression(array, node, isUnsigned ? 77 : 76);
       }
 
       else if (node.kind === 64) {
-        this.emitBinaryExpression(array, node, isUnsigned ? 70 : 69);
+        this.emitBinaryExpression(array, node, isUnsigned ? 112 : 111);
       }
 
       else if (node.kind === 66) {
-        this.emitBinaryExpression(array, node, isUnsigned ? 75 : 76);
+        this.emitBinaryExpression(array, node, isUnsigned ? 118 : 117);
       }
 
       else {

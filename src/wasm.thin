@@ -590,7 +590,13 @@ class WasmModule {
 
         //data_segment
         wasmWriteVarUnsigned(array, 0); //index, the linear memory index (0 in the MVP)
-        wasmWriteVarUnsigned(array, WASM_OPCODE_I32_CONST); //offset, an i32 initializer expression that computes the offset at which to place the data
+
+        //offset, an i32 initializer expression that computes the offset at which to place the data
+        //FIXME: This could be wrong
+        wasmWriteVarUnsigned(array, WASM_OPCODE_I32_CONST);
+        wasmWriteVarUnsigned(array, array.length() + 5); //const value
+        wasmWriteVarUnsigned(array, 0x0b); //end opcode
+
         wasmWriteVarUnsigned(array, initializerLength); //size, size of data (in bytes)
 
         // Emit the range of the memory initializer
