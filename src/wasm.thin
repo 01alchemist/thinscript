@@ -1,178 +1,210 @@
 // Control flow operators
-const WASM_OPCODE_NOP: byte = 0;
-const WASM_OPCODE_BLOCK: byte = 1;
-const WASM_OPCODE_LOOP: byte = 2;
-const WASM_OPCODE_IF: byte = 3;
-const WASM_OPCODE_IF_ELSE: byte = 4;
-const WASM_OPCODE_SELECT: byte = 5;
-const WASM_OPCODE_BR: byte = 6;
-const WASM_OPCODE_BR_IF: byte = 7;
-const WASM_OPCODE_BR_TABLE: byte = 8;
-const WASM_OPCODE_RETURN: byte = 20;
-const WASM_OPCODE_UNREACHABLE: byte = 21;
+const WASM_OPCODE_UNREACHABLE: byte = 0x00;
+const WASM_OPCODE_NOP: byte = 0x01;
+const WASM_OPCODE_BLOCK: byte = 0x02;
+const WASM_OPCODE_LOOP: byte = 0x03;
+const WASM_OPCODE_IF: byte = 0x04;
+const WASM_OPCODE_IF_ELSE: byte = 0x05;
+const WASM_OPCODE_END: byte = 0x0b;
+const WASM_OPCODE_BR: byte = 0x0c;
+const WASM_OPCODE_BR_IF: byte = 0x0d;
+const WASM_OPCODE_BR_TABLE: byte = 0x0e;
+const WASM_OPCODE_RETURN: byte = 0x0f;
 
-// Basic operators
-const WASM_OPCODE_I32_CONST: byte = 10;
-const WASM_OPCODE_I64_CONST: byte = 11;
-const WASM_OPCODE_F64_CONST: byte = 12;
-const WASM_OPCODE_F32_CONST: byte = 13;
-const WASM_OPCODE_GET_LOCAL: byte = 14;
-const WASM_OPCODE_SET_LOCAL: byte = 15;
-const WASM_OPCODE_CALL: byte = 18;
-const WASM_OPCODE_CALL_INDIRECT: byte = 19;
-const WASM_OPCODE_CALL_IMPORT: byte = 31;
+// Call operators
+const WASM_OPCODE_CALL: byte = 0x10;
+const WASM_OPCODE_CALL_INDIRECT: byte = 0x11;
+
+//Parametric operators
+const WASM_OPCODE_DROP: byte = 0x1a;
+const WASM_OPCODE_SELECT: byte = 0x1b;
+
+//Variable access
+const WASM_OPCODE_GET_LOCAL: byte = 0x20;
+const WASM_OPCODE_SET_LOCAL: byte = 0x21;
+const WASM_OPCODE_TEE_LOCAL: byte = 0x22;
+const WASM_OPCODE_GET_GLOBAL: byte = 0x23;
+const WASM_OPCODE_SET_GLOBAL: byte = 0x24;
 
 // Memory-related operators
-const WASM_OPCODE_I32_LOAD8_S: byte = 32;
-const WASM_OPCODE_I32_LOAD8_U: byte = 33;
-const WASM_OPCODE_I32_LOAD16_S: byte = 34;
-const WASM_OPCODE_I32_LOAD16_U: byte = 35;
-const WASM_OPCODE_I64_LOAD8_S: byte = 36;
-const WASM_OPCODE_I64_LOAD8_U: byte = 37;
-const WASM_OPCODE_I64_LOAD16_S: byte = 38;
-const WASM_OPCODE_I64_LOAD16_U: byte = 39;
-const WASM_OPCODE_I64_LOAD32_S: byte = 40;
-const WASM_OPCODE_I64_LOAD32_U: byte = 41;
-const WASM_OPCODE_I32_LOAD: byte = 42;
-const WASM_OPCODE_I64_LOAD: byte = 43;
-const WASM_OPCODE_F32_LOAD: byte = 44;
-const WASM_OPCODE_F64_LOAD: byte = 45;
-const WASM_OPCODE_I32_STORE8: byte = 46;
-const WASM_OPCODE_I32_STORE16: byte = 47;
-const WASM_OPCODE_I64_STORE8: byte = 48;
-const WASM_OPCODE_I64_STORE16: byte = 49;
-const WASM_OPCODE_I64_STORE32: byte = 50;
-const WASM_OPCODE_I32_STORE: byte = 51;
-const WASM_OPCODE_I64_STORE: byte = 52;
-const WASM_OPCODE_F32_STORE: byte = 53;
-const WASM_OPCODE_F64_STORE: byte = 54;
-const WASM_OPCODE_MEMORY_SIZE: byte = 59;
-const WASM_OPCODE_GROW_MEMORY: byte = 57;
+const WASM_OPCODE_I32_LOAD: byte = 0x28;
+const WASM_OPCODE_I64_LOAD: byte = 0x29;
+const WASM_OPCODE_F32_LOAD: byte = 0x2a;
+const WASM_OPCODE_F64_LOAD: byte = 0x2b;
 
-// Simple operators
-const WASM_OPCODE_I32_ADD: byte = 64;
-const WASM_OPCODE_I32_SUB: byte = 65;
-const WASM_OPCODE_I32_MUL: byte = 66;
-const WASM_OPCODE_I32_DIV_S: byte = 67;
-const WASM_OPCODE_I32_DIV_U: byte = 68;
-const WASM_OPCODE_I32_REM_S: byte = 69;
-const WASM_OPCODE_I32_REM_U: byte = 70;
-const WASM_OPCODE_I32_AND: byte = 71;
-const WASM_OPCODE_I32_OR: byte = 72;
-const WASM_OPCODE_I32_XOR: byte = 73;
-const WASM_OPCODE_I32_SHL: byte = 74;
-const WASM_OPCODE_I32_SHR_U: byte = 75;
-const WASM_OPCODE_I32_SHR_S: byte = 76;
-const WASM_OPCODE_I32_ROTR: byte = 182;
-const WASM_OPCODE_I32_ROTL: byte = 183;
-const WASM_OPCODE_I32_EQ: byte = 77;
-const WASM_OPCODE_I32_NE: byte = 78;
-const WASM_OPCODE_I32_LT_S: byte = 79;
-const WASM_OPCODE_I32_LE_S: byte = 80;
-const WASM_OPCODE_I32_LT_U: byte = 81;
-const WASM_OPCODE_I32_LE_U: byte = 82;
-const WASM_OPCODE_I32_GT_S: byte = 83;
-const WASM_OPCODE_I32_GE_S: byte = 84;
-const WASM_OPCODE_I32_GT_U: byte = 85;
-const WASM_OPCODE_I32_GE_U: byte = 86;
-const WASM_OPCODE_I32_CLZ: byte = 87;
-const WASM_OPCODE_I32_CTZ: byte = 88;
-const WASM_OPCODE_I32_POPCNT: byte = 89;
-const WASM_OPCODE_I32_EQZ: byte = 90;
-const WASM_OPCODE_I64_ADD: byte = 91;
-const WASM_OPCODE_I64_SUB: byte = 92;
-const WASM_OPCODE_I64_MUL: byte = 93;
-const WASM_OPCODE_I64_DIV_S: byte = 94;
-const WASM_OPCODE_I64_DIV_U: byte = 95;
-const WASM_OPCODE_I64_REM_S: byte = 96;
-const WASM_OPCODE_I64_REM_U: byte = 97;
-const WASM_OPCODE_I64_AND: byte = 98;
-const WASM_OPCODE_I64_OR: byte = 99;
-const WASM_OPCODE_I64_XOR: byte = 100;
-const WASM_OPCODE_I64_SHL: byte = 101;
-const WASM_OPCODE_I64_SHR_U: byte = 102;
-const WASM_OPCODE_I64_SHR_S: byte = 103;
-const WASM_OPCODE_I64_ROTR: byte = 184;
-const WASM_OPCODE_I64_ROTL: byte = 185;
-const WASM_OPCODE_I64_EQ: byte = 104;
-const WASM_OPCODE_I64_NE: byte = 105;
-const WASM_OPCODE_I64_LT_S: byte = 106;
-const WASM_OPCODE_I64_LE_S: byte = 107;
-const WASM_OPCODE_I64_LT_U: byte = 108;
-const WASM_OPCODE_I64_LE_U: byte = 109;
-const WASM_OPCODE_I64_GT_S: byte = 110;
-const WASM_OPCODE_I64_GE_S: byte = 111;
-const WASM_OPCODE_I64_GT_U: byte = 112;
-const WASM_OPCODE_I64_GE_U: byte = 113;
-const WASM_OPCODE_I64_CLZ: byte = 114;
-const WASM_OPCODE_I64_CTZ: byte = 115;
-const WASM_OPCODE_I64_POPCNT: byte = 116;
-const WASM_OPCODE_I64_EQZ: byte = 186;
-const WASM_OPCODE_F32_ADD: byte = 117;
-const WASM_OPCODE_F32_SUB: byte = 118;
-const WASM_OPCODE_F32_MUL: byte = 119;
-const WASM_OPCODE_F32_DIV: byte = 120;
-const WASM_OPCODE_F32_MIN: byte = 121;
-const WASM_OPCODE_F32_MAX: byte = 122;
-const WASM_OPCODE_F32_ABS: byte = 123;
-const WASM_OPCODE_F32_NEG: byte = 124;
-const WASM_OPCODE_F32_COPYSIGN: byte = 125;
-const WASM_OPCODE_F32_CEIL: byte = 126;
-const WASM_OPCODE_F32_FLOOR: byte = 127;
-const WASM_OPCODE_F32_TRUNC: byte = 128;
-const WASM_OPCODE_F32_NEAREST: byte = 129;
-const WASM_OPCODE_F32_SQRT: byte = 130;
-const WASM_OPCODE_F32_EQ: byte = 131;
-const WASM_OPCODE_F32_NE: byte = 132;
-const WASM_OPCODE_F32_LT: byte = 133;
-const WASM_OPCODE_F32_LE: byte = 134;
-const WASM_OPCODE_F32_GT: byte = 135;
-const WASM_OPCODE_F32_GE: byte = 136;
-const WASM_OPCODE_F64_ADD: byte = 137;
-const WASM_OPCODE_F64_SUB: byte = 138;
-const WASM_OPCODE_F64_MUL: byte = 139;
-const WASM_OPCODE_F64_DIV: byte = 140;
-const WASM_OPCODE_F64_MIN: byte = 141;
-const WASM_OPCODE_F64_MAX: byte = 142;
-const WASM_OPCODE_F64_ABS: byte = 143;
-const WASM_OPCODE_F64_NEG: byte = 144;
-const WASM_OPCODE_F64_COPYSIGN: byte = 145;
-const WASM_OPCODE_F64_CEIL: byte = 146;
-const WASM_OPCODE_F64_FLOOR: byte = 147;
-const WASM_OPCODE_F64_TRUNC: byte = 148;
-const WASM_OPCODE_F64_NEAREST: byte = 149;
-const WASM_OPCODE_F64_SQRT: byte = 150;
-const WASM_OPCODE_F64_EQ: byte = 151;
-const WASM_OPCODE_F64_NE: byte = 152;
-const WASM_OPCODE_F64_LT: byte = 153;
-const WASM_OPCODE_F64_LE: byte = 154;
-const WASM_OPCODE_F64_GT: byte = 155;
-const WASM_OPCODE_F64_GE: byte = 156;
-const WASM_OPCODE_I32_TRUNC_S_F32: byte = 157;
-const WASM_OPCODE_I32_TRUNC_S_F64: byte = 158;
-const WASM_OPCODE_I32_TRUNC_U_F32: byte = 159;
-const WASM_OPCODE_I32_TRUNC_U_F64: byte = 160;
-const WASM_OPCODE_I32_WRAP_I64: byte = 161;
-const WASM_OPCODE_I64_TRUNC_S_F32: byte = 162;
-const WASM_OPCODE_I64_TRUNC_S_F64: byte = 163;
-const WASM_OPCODE_I64_TRUNC_U_F32: byte = 164;
-const WASM_OPCODE_I64_TRUNC_U_F64: byte = 165;
-const WASM_OPCODE_I64_EXTEND_S_I32: byte = 166;
-const WASM_OPCODE_I64_EXTEND_U_I32: byte = 167;
-const WASM_OPCODE_F32_CONVERT_S_I32: byte = 168;
-const WASM_OPCODE_F32_CONVERT_U_I32: byte = 169;
-const WASM_OPCODE_F32_CONVERT_S_I64: byte = 170;
-const WASM_OPCODE_F32_CONVERT_U_I64: byte = 171;
-const WASM_OPCODE_F32_DEMOTE_F64: byte = 172;
-const WASM_OPCODE_F32_REINTERPRET_I32: byte = 173;
-const WASM_OPCODE_F64_CONVERT_S_I32: byte = 174;
-const WASM_OPCODE_F64_CONVERT_U_I32: byte = 175;
-const WASM_OPCODE_F64_CONVERT_S_I64: byte = 176;
-const WASM_OPCODE_F64_CONVERT_U_I64: byte = 177;
-const WASM_OPCODE_F64_PROMOTE_F32: byte = 178;
-const WASM_OPCODE_F64_REINTERPRET_I64: byte = 179;
-const WASM_OPCODE_I32_REINTERPRET_F32: byte = 180;
-const WASM_OPCODE_I64_REINTERPRET_F64: byte = 181;
+const WASM_OPCODE_I32_LOAD8_S: byte = 0x2c;
+const WASM_OPCODE_I32_LOAD8_U: byte = 0x2d;
+const WASM_OPCODE_I32_LOAD16_S: byte = 0x2e;
+const WASM_OPCODE_I32_LOAD16_U: byte = 0x2f;
+
+const WASM_OPCODE_I64_LOAD8_S: byte = 0x30;
+const WASM_OPCODE_I64_LOAD8_U: byte = 0x31;
+const WASM_OPCODE_I64_LOAD16_S: byte = 0x32;
+const WASM_OPCODE_I64_LOAD16_U: byte = 0x33;
+const WASM_OPCODE_I64_LOAD32_S: byte = 0x34;
+const WASM_OPCODE_I64_LOAD32_U: byte = 0x35;
+
+const WASM_OPCODE_I32_STORE: byte = 0x36;
+const WASM_OPCODE_I64_STORE: byte = 0x37;
+const WASM_OPCODE_F32_STORE: byte = 0x38;
+const WASM_OPCODE_F64_STORE: byte = 0x39;
+
+const WASM_OPCODE_I32_STORE8: byte = 0x3a;
+const WASM_OPCODE_I32_STORE16: byte = 0x3b;
+const WASM_OPCODE_I64_STORE8: byte = 0x3c;
+const WASM_OPCODE_I64_STORE16: byte = 0x3d;
+const WASM_OPCODE_I64_STORE32: byte = 0x3e;
+const WASM_OPCODE_MEMORY_SIZE: byte = 0x3f; //query the size of memory
+const WASM_OPCODE_GROW_MEMORY: byte = 0x40;
+
+// Constants
+const WASM_OPCODE_I32_CONST: byte = 0x41;
+const WASM_OPCODE_I64_CONST: byte = 0x42;
+const WASM_OPCODE_F32_CONST: byte = 0x43;
+const WASM_OPCODE_F64_CONST: byte = 0x44;
+
+//Comparison operators
+const WASM_OPCODE_I32_EQZ: byte = 0x45;
+const WASM_OPCODE_I32_EQ: byte = 0x46;
+const WASM_OPCODE_I32_NE: byte = 0x47;
+const WASM_OPCODE_I32_LT_S: byte = 0x48;
+const WASM_OPCODE_I32_LT_U: byte = 0x49;
+const WASM_OPCODE_I32_GT_S: byte = 0x4a;
+const WASM_OPCODE_I32_GT_U: byte = 0x4b;
+const WASM_OPCODE_I32_LE_S: byte = 0x4c;
+const WASM_OPCODE_I32_LE_U: byte = 0x4d;
+const WASM_OPCODE_I32_GE_S: byte = 0x4e;
+const WASM_OPCODE_I32_GE_U: byte = 0x4f;
+
+const WASM_OPCODE_I64_EQZ: byte = 0x50;
+const WASM_OPCODE_I64_EQ: byte = 0x51;
+const WASM_OPCODE_I64_NE: byte = 0x52;
+const WASM_OPCODE_I64_LT_S: byte = 0x53;
+const WASM_OPCODE_I64_LT_U: byte = 0x54;
+const WASM_OPCODE_I64_GT_S: byte = 0x55;
+const WASM_OPCODE_I64_GT_U: byte = 0x56;
+const WASM_OPCODE_I64_LE_S: byte = 0x57;
+const WASM_OPCODE_I64_LE_U: byte = 0x58;
+const WASM_OPCODE_I64_GE_S: byte = 0x59;
+const WASM_OPCODE_I64_GE_U: byte = 0x5a;
+
+const WASM_OPCODE_F32_EQ: byte = 0x5b;
+const WASM_OPCODE_F32_NE: byte = 0x5c;
+const WASM_OPCODE_F32_LT: byte = 0x5d;
+const WASM_OPCODE_F32_GT: byte = 0x5e;
+const WASM_OPCODE_F32_LE: byte = 0x5f;
+const WASM_OPCODE_F32_GE: byte = 0x60;
+
+const WASM_OPCODE_F64_EQ: byte = 0x61;
+const WASM_OPCODE_F64_NE: byte = 0x62;
+const WASM_OPCODE_F64_LT: byte = 0x63;
+const WASM_OPCODE_F64_GT: byte = 0x64;
+const WASM_OPCODE_F64_LE: byte = 0x65;
+const WASM_OPCODE_F64_GE: byte = 0x66;
+
+//Numeric operators
+const WASM_OPCODE_I32_CLZ: byte = 0x67;
+const WASM_OPCODE_I32_CTZ: byte = 0x68;
+const WASM_OPCODE_I32_POPCNT: byte = 0x69;
+const WASM_OPCODE_I32_ADD: byte = 0x6a;
+const WASM_OPCODE_I32_SUB: byte = 0x6b;
+const WASM_OPCODE_I32_MUL: byte = 0x6c;
+const WASM_OPCODE_I32_DIV_S: byte = 0x6d;
+const WASM_OPCODE_I32_DIV_U: byte = 0x6e;
+const WASM_OPCODE_I32_REM_S: byte = 0x6f;
+const WASM_OPCODE_I32_REM_U: byte = 0x70;
+const WASM_OPCODE_I32_AND: byte = 0x71;
+const WASM_OPCODE_I32_OR: byte = 0x72;
+const WASM_OPCODE_I32_XOR: byte = 0x73;
+const WASM_OPCODE_I32_SHL: byte = 0x74;
+const WASM_OPCODE_I32_SHR_S: byte = 0x75;
+const WASM_OPCODE_I32_SHR_U: byte = 0x76;
+const WASM_OPCODE_I32_ROTL: byte = 0x77;
+const WASM_OPCODE_I32_ROTR: byte = 0x78;
+
+const WASM_OPCODE_I64_CLZ: byte = 0x79;
+const WASM_OPCODE_I64_CTZ: byte = 0x7a;
+const WASM_OPCODE_I64_POPCNT: byte = 0x7b;
+const WASM_OPCODE_I64_ADD: byte = 0x7c;
+const WASM_OPCODE_I64_SUB: byte = 0x7d;
+const WASM_OPCODE_I64_MUL: byte = 0x7e;
+const WASM_OPCODE_I64_DIV_S: byte = 0x7f;
+const WASM_OPCODE_I64_DIV_U: byte = 0x80;
+const WASM_OPCODE_I64_REM_S: byte = 0x81;
+const WASM_OPCODE_I64_REM_U: byte = 0x82;
+const WASM_OPCODE_I64_AND: byte = 0x83;
+const WASM_OPCODE_I64_OR: byte = 0x84;
+const WASM_OPCODE_I64_XOR: byte = 0x85;
+const WASM_OPCODE_I64_SHL: byte = 0x86;
+const WASM_OPCODE_I64_SHR_S: byte = 0x87;
+const WASM_OPCODE_I64_SHR_U: byte = 0x88;
+const WASM_OPCODE_I64_ROTL: byte = 0x89;
+const WASM_OPCODE_I64_ROTR: byte = 0x8a;
+
+const WASM_OPCODE_F32_ABS: byte = 0x8b;
+const WASM_OPCODE_F32_NEG: byte = 0x8c;
+const WASM_OPCODE_F32_CEIL: byte = 0x8d;
+const WASM_OPCODE_F32_FLOOR: byte = 0x8e;
+const WASM_OPCODE_F32_TRUNC: byte = 0x8f;
+const WASM_OPCODE_F32_NEAREST: byte = 0x90;
+const WASM_OPCODE_F32_SQRT: byte = 0x91;
+const WASM_OPCODE_F32_ADD: byte = 0x92;
+const WASM_OPCODE_F32_SUB: byte = 0x93;
+const WASM_OPCODE_F32_MUL: byte = 0x94;
+const WASM_OPCODE_F32_DIV: byte = 0x95;
+const WASM_OPCODE_F32_MIN: byte = 0x96;
+const WASM_OPCODE_F32_MAX: byte = 0x97;
+const WASM_OPCODE_F32_COPYSIGN: byte = 0x98;
+
+const WASM_OPCODE_F64_ABS: byte = 0x99;
+const WASM_OPCODE_F64_NEG: byte = 0x9a;
+const WASM_OPCODE_F64_CEIL: byte = 0x9b;
+const WASM_OPCODE_F64_FLOOR: byte = 0x9c;
+const WASM_OPCODE_F64_TRUNC: byte = 0x9d;
+const WASM_OPCODE_F64_NEAREST: byte = 0x9e;
+const WASM_OPCODE_F64_SQRT: byte = 0x9f;
+const WASM_OPCODE_F64_ADD: byte = 0xa0;
+const WASM_OPCODE_F64_SUB: byte = 0xa1;
+const WASM_OPCODE_F64_MUL: byte = 0xa2;
+const WASM_OPCODE_F64_DIV: byte = 0xa3;
+const WASM_OPCODE_F64_MIN: byte = 0xa4;
+const WASM_OPCODE_F64_MAX: byte = 0xa5;
+const WASM_OPCODE_F64_COPYSIGN: byte = 0xa6;
+
+//Conversions
+const WASM_OPCODE_I32_WRAP_I64: byte = 0xa7;
+const WASM_OPCODE_I32_TRUNC_S_F32: byte = 0xa8;
+const WASM_OPCODE_I32_TRUNC_U_F32: byte = 0xa9;
+const WASM_OPCODE_I32_TRUNC_S_F64: byte = 0xaa;
+const WASM_OPCODE_I32_TRUNC_U_F64: byte = 0xab;
+
+const WASM_OPCODE_I64_EXTEND_S_I32: byte = 0xac;
+const WASM_OPCODE_I64_EXTEND_U_I32: byte = 0xad;
+const WASM_OPCODE_I64_TRUNC_S_F32: byte = 0xae;
+const WASM_OPCODE_I64_TRUNC_U_F32: byte = 0xaf;
+const WASM_OPCODE_I64_TRUNC_S_F64: byte = 0xb0;
+const WASM_OPCODE_I64_TRUNC_U_F64: byte = 0xb1;
+
+const WASM_OPCODE_F32_CONVERT_S_I32: byte = 0xb2;
+const WASM_OPCODE_F32_CONVERT_U_I32: byte = 0xb3;
+const WASM_OPCODE_F32_CONVERT_S_I64: byte = 0xb4;
+const WASM_OPCODE_F32_CONVERT_U_I64: byte = 0xb5;
+const WASM_OPCODE_F32_DEMOTE_F64: byte = 0xb6;
+
+const WASM_OPCODE_F64_CONVERT_S_I32: byte = 0xb7;
+const WASM_OPCODE_F64_CONVERT_U_I32: byte = 0xb8;
+const WASM_OPCODE_F64_CONVERT_S_I64: byte = 0xb9;
+const WASM_OPCODE_F64_CONVERT_U_I64: byte = 0xba;
+const WASM_OPCODE_F64_PROMOTE_F32: byte = 0xbb;
+
+//Reinterpretations
+const WASM_OPCODE_I32_REINTERPRET_F32: byte = 0xbc;
+const WASM_OPCODE_I64_REINTERPRET_F64: byte = 0xbd;
+const WASM_OPCODE_F32_REINTERPRET_I32: byte = 0xbe;
+const WASM_OPCODE_F64_REINTERPRET_I64: byte = 0xbf;
+
+
+const WASM_OPCODE_CALL_IMPORT: byte = 31; //FIXME: Not found in spec
 
 // const WASM_MAGIC = '\0' | 'a' << 8 | 's' << 16 | 'm' << 24;
 const WASM_MAGIC = 0x6d736100;
@@ -558,7 +590,7 @@ class WasmModule {
 
         //data_segment
         wasmWriteVarUnsigned(array, 0); //index, the linear memory index (0 in the MVP)
-        wasmWriteVarUnsigned(array, WASM_MEMORY_INITIALIZER_BASE); //offset, an i32 initializer expression that computes the offset at which to place the data
+        wasmWriteVarUnsigned(array, WASM_OPCODE_I32_CONST); //offset, an i32 initializer expression that computes the offset at which to place the data
         wasmWriteVarUnsigned(array, initializerLength); //size, size of data (in bytes)
 
         // Emit the range of the memory initializer
