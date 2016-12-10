@@ -1,7 +1,7 @@
 /build.js
 /lib/thinc.c
 /out/benchmark.html
-/out/benchmark.thin
+/out/benchmark.thin.bkp
 /out/common.js
 /out/compiled.c
 /out/compiled.wasm

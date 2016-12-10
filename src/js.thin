@@ -6,7 +6,7 @@ enum EmitBinary {
 class JsResult {
   context: CheckContext;
   code: StringBuilder;
-  indent: int;
+  indent: int32;
   foundMultiply: bool;
   previousNode: Node;
 
@@ -94,9 +94,9 @@ class JsResult {
       code.appendChar('(');
     }
 
-    this.emitExpression(node.binaryLeft(), isRightAssociative ? (operatorPrecedence as int + 1) as Precedence : operatorPrecedence);
+    this.emitExpression(node.binaryLeft(), isRightAssociative ? (operatorPrecedence as int32 + 1) as Precedence : operatorPrecedence);
     code.append(operator);
-    this.emitExpression(node.binaryRight(), isRightAssociative ? operatorPrecedence : (operatorPrecedence as int + 1) as Precedence);
+    this.emitExpression(node.binaryRight(), isRightAssociative ? operatorPrecedence : (operatorPrecedence as int32 + 1) as Precedence);
 
     if (selfPrecedence > operatorPrecedence) {
       code.appendChar(')');
@@ -141,13 +141,13 @@ class JsResult {
       code.append(node.intValue != 0 ? "true" : "false");
     }
 
-    else if (node.kind == NodeKind.INT) {
+    else if (node.kind == NodeKind.INT32) {
       if (parentPrecedence == Precedence.MEMBER) {
         code.appendChar('(');
       }
 
       code.append(node.resolvedType.isUnsigned()
-        ? (node.intValue as uint).toString()
+        ? (node.intValue as uint32).toString()
         : node.intValue.toString());
 
       if (parentPrecedence == Precedence.MEMBER) {
@@ -207,7 +207,7 @@ class JsResult {
         }
 
         // Truncate signed
-        else if (type == context.intType) {
+        else if (type == context.int32Type) {
           if (parentPrecedence > Precedence.BITWISE_OR) {
             code.appendChar('(');
           }
@@ -221,7 +221,7 @@ class JsResult {
         }
 
         // Truncate unsigned
-        else if (type == context.uintType) {
+        else if (type == context.uint32Type) {
           if (parentPrecedence > Precedence.SHIFT) {
             code.appendChar('(');
           }

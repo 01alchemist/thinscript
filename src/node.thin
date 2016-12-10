@@ -32,7 +32,10 @@ enum NodeKind {
   DOT,
   HOOK,
   INDEX,
-  INT,
+  INT32,
+  INT64,
+  FLOAT32,
+  FLOAT64,
   NAME,
   NEW,
   NULL,
@@ -126,12 +129,12 @@ const NODE_FLAG_UNSAFE = 1 << 11;
 const NODE_FLAG_UNSIGNED_OPERATOR = 1 << 12;
 
 class NodeFlag {
-  flag: int;
+  flag: int32;
   range: Range;
   next: NodeFlag;
 }
 
-function appendFlag(first: NodeFlag, flag: int, range: Range): NodeFlag {
+function appendFlag(first: NodeFlag, flag: int32, range: Range): NodeFlag {
   var link = new NodeFlag();
   link.flag = flag;
   link.range = range;
@@ -150,7 +153,7 @@ function appendFlag(first: NodeFlag, flag: int, range: Range): NodeFlag {
   return first;
 }
 
-function allFlags(link: NodeFlag): int {
+function allFlags(link: NodeFlag): int32 {
   var all = 0;
   while (link != null) {
     all = all | link.flag;
@@ -159,7 +162,7 @@ function allFlags(link: NodeFlag): int {
   return all;
 }
 
-function rangeForFlag(link: NodeFlag, flag: int): Range {
+function rangeForFlag(link: NodeFlag, flag: int32): Range {
   while (link != null) {
     if (link.flag == flag) {
       return link.range;
@@ -171,7 +174,7 @@ function rangeForFlag(link: NodeFlag, flag: int): Range {
 
 class Node {
   kind: NodeKind;
-  flags: int;
+  flags: int32;
   firstFlag: NodeFlag;
   range: Range;
   internalRange: Range;
@@ -180,7 +183,8 @@ class Node {
   lastChild: Node;
   previousSibling: Node;
   nextSibling: Node;
-  intValue: int;
+  intValue: int32;
+  floatValue: float32;
   stringValue: string;
   resolvedType: Type;
   symbol: Symbol;
@@ -210,8 +214,8 @@ class Node {
     this.removeChildren();
   }
 
-  becomeIntegerConstant(value: int): void {
-    this.kind = NodeKind.INT;
+  becomeIntegerConstant(value: int32): void {
+    this.kind = NodeKind.INT32;
     this.symbol = null;
     this.intValue = value;
     this.removeChildren();
@@ -225,11 +229,11 @@ class Node {
   }
 
   isNegativeInteger(): bool {
-    return this.kind == NodeKind.INT && this.intValue < 0;
+    return this.kind == NodeKind.INT32 && this.intValue < 0;
   }
 
   isNonNegativeInteger(): bool {
-    return this.kind == NodeKind.INT && this.intValue >= 0;
+    return this.kind == NodeKind.INT32 && this.intValue >= 0;
   }
 
   isDeclare(): bool {
@@ -272,7 +276,7 @@ class Node {
     return (this.flags & NODE_FLAG_UNSIGNED_OPERATOR) != 0;
   }
 
-  childCount(): int {
+  childCount(): int32 {
     var count = 0;
     var child = this.firstChild;
     while (child != null) {
@@ -742,10 +746,17 @@ function createBool(value: bool): Node {
   return node;
 }
 
-function createInt(value: int): Node {
+function createInt(value: int32): Node {
   var node = new Node();
-  node.kind = NodeKind.INT;
+  node.kind = NodeKind.INT32;
   node.intValue = value;
+  return node;
+}
+
+function createFloat(value: float32): Node {
+  var node = new Node();
+  node.kind = NodeKind.FLOAT32;
+  node.floatValue = value;
   return node;
 }
 

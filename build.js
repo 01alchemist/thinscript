@@ -101,11 +101,11 @@ var compiled = fs.readFileSync(__dirname + '/out/compiled.js', 'utf8');
 console.log('compiling...');
 var compiled = compile(compiled, sources);
 
-console.log('compiling again...');
-var compiled = compile(compiled.js, sources);
-
-console.log('compiling again...');
-var compiled = compile(compiled.js, sources);
+// console.log('compiling again...');
+// var compiled = compile(compiled.js, sources);
+//
+// console.log('compiling again...');
+// var compiled = compile(compiled.js, sources);
 
 fs.writeFileSync(__dirname + '/out/compiled.c', compiled.c);
 fs.writeFileSync(__dirname + '/out/compiled.h', compiled.h);
@@ -118,6 +118,6 @@ console.log('wrote to "out/compiled.js"');
 fs.writeFileSync(__dirname + '/out/compiled.wasm', Buffer(compiled.wasm));
 console.log('wrote to "out/compiled.wasm"');
 
-console.log('building the native compiler...');
-if (process.platform === 'win32') compileNativeWindows();
-else compileNativeUnix();
+// console.log('building the native compiler...');
+// if (process.platform === 'win32') compileNativeWindows();
+// else compileNativeUnix();

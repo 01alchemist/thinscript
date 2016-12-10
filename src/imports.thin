@@ -2,11 +2,11 @@ declare function assert(truth: bool): void;
 declare function Profiler_begin(): void;
 declare function Profiler_end(text: string): void;
 
-function isPositivePowerOf2(value: int): bool {
+function isPositivePowerOf2(value: int32): bool {
   return value > 0 && (value & (value - 1)) == 0;
 }
 
-function alignToNextMultipleOf(offset: int, alignment: int): int {
+function alignToNextMultipleOf(offset: int32, alignment: int32): int32 {
   assert(isPositivePowerOf2(alignment));
   return (offset + alignment - 1) & -alignment;
 }

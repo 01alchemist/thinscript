@@ -38,7 +38,8 @@ const SYMBOL_FLAG_IS_REFERENCE = 1 << 2;
 const SYMBOL_FLAG_IS_UNARY_OPERATOR = 1 << 3;
 const SYMBOL_FLAG_IS_UNSIGNED = 1 << 4;
 const SYMBOL_FLAG_NATIVE_INTEGER = 1 << 5;
-const SYMBOL_FLAG_USED = 1 << 6;
+const SYMBOL_FLAG_NATIVE_FLOAT = 1 << 6;
+const SYMBOL_FLAG_USED = 1 << 7;
 
 class Symbol {
   kind: SymbolKind;
@@ -49,9 +50,9 @@ class Symbol {
   resolvedType: Type;
   next: Symbol;
   state: SymbolState;
-  flags: int;
-  byteSize: int;
-  maxAlignment: int;
+  flags: int32;
+  byteSize: int32;
+  maxAlignment: int32;
   rename: string;
 
   // The "offset" variable is used to store kind-specific information
@@ -70,7 +71,7 @@ class Symbol {
   //   VARIABLE_INSTANCE: Instance offset
   //   VARIABLE_LOCAL: N/A
   //
-  offset: int;
+  offset: int32;
 
   isEnumValue(): bool {
     return this.node.parent.kind == NodeKind.ENUM;

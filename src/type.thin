@@ -25,35 +25,39 @@ class Type {
     return this.symbol != null && (this.symbol.flags & SYMBOL_FLAG_IS_UNSIGNED) != 0;
   }
 
+  isFloat(): bool {
+    return this.symbol != null && (this.symbol.flags & SYMBOL_FLAG_NATIVE_FLOAT) != 0 || this.isEnum();
+  }
+
   isReference(): bool {
     return this.pointerTo != null || this.symbol != null && (this.symbol.flags & SYMBOL_FLAG_IS_REFERENCE) != 0;
   }
 
   underlyingType(context: CheckContext): Type {
-    return this.isEnum() ? context.intType : this.pointerTo != null ? context.uintType : this;
+    return this.isEnum() ? context.int32Type : this.pointerTo != null ? context.uint32Type : this;
   }
 
-  integerBitCount(context: CheckContext): int {
+  integerBitCount(context: CheckContext): int32 {
     return this.symbol != null ? this.symbol.byteSize * 8 : 0;
   }
 
-  integerBitMask(context: CheckContext): uint {
-    return ~0 as uint >> (32 - this.integerBitCount(context)) as uint;
+  integerBitMask(context: CheckContext): uint32 {
+    return ~0 as uint32 >> (32 - this.integerBitCount(context)) as uint32;
   }
 
-  allocationSizeOf(context: CheckContext): int {
+  allocationSizeOf(context: CheckContext): int32 {
     return this.symbol == null ? context.pointerByteSize : this.symbol.byteSize;
   }
 
-  allocationAlignmentOf(context: CheckContext): int {
+  allocationAlignmentOf(context: CheckContext): int32 {
     return this.allocationSizeOf(context); // This is true right now
   }
 
-  variableSizeOf(context: CheckContext): int {
+  variableSizeOf(context: CheckContext): int32 {
     return this.isReference() ? context.pointerByteSize : this.symbol.byteSize;
   }
 
-  variableAlignmentOf(context: CheckContext): int {
+  variableAlignmentOf(context: CheckContext): int32 {
     return this.variableSizeOf(context); // This is true right now
   }
 

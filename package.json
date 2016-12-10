@@ -6,6 +6,13 @@
     "thinc": "lib/thinc.js"
   },
   "scripts": {
-    "build-tst":"thinc tests/empty.thin --wasm"
+    "build": "node build.js",
+    "build:watch": "watch 'node build.js && npm run build-turbo-tst' ./src",
+    "build-tst": "out/thinc tests/empty.thin --wasm --out tests/empty.wasm",
+    "watch-turbo-tst": "watch 'npm run build-turbo-tst' ./tests",
+    "build-turbo-tst": "node lib/thinc.js tests/turbo.thin --turbo-js --out tests/turbo.js"
+  },
+  "devDependencies": {
+    "watch": "^1.0.1"
   }
 }

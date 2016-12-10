@@ -206,8 +206,8 @@ const WASM_OPCODE_F64_REINTERPRET_I64: byte = 0xbf;
 
 const WASM_OPCODE_CALL_IMPORT: byte = 31; //FIXME: Not found in spec
 
-// const WASM_MAGIC = '\0' | 'a' << 8 | 's' << 16 | 'm' << 24;
-const WASM_MAGIC = 0x6d736100;
+const WASM_MAGIC = '\0' | 'a' << 8 | 's' << 16 | 'm' << 24;
+// const WASM_MAGIC = 0x6d736100;
 const WASM_VERSION = 0x0d;
 const WASM_SIZE_IN_PAGES = 256;
 const WASM_SET_MAX_MEMORY = false;
@@ -242,8 +242,8 @@ enum WasmSection {
 enum WasmExternalKind {
     Function = 0,
     Table = 1,
-    Memory = 1,
-    Global = 1,
+    Memory = 2,
+    Global = 3,
 }
 
 class WasmWrappedType {
@@ -288,14 +288,14 @@ function wasmAreSignaturesEqual(a: WasmSignature, b: WasmSignature): bool {
 
 class WasmFunction {
     symbol: Symbol;
-    signatureIndex: int;
+    signatureIndex: int32;
     isExported: bool;
-    intLocalCount: int;
+    intLocalCount: int32;
     next: WasmFunction;
 }
 
 class WasmImport {
-    signatureIndex: int;
+    signatureIndex: int32;
     module: string;
     name: string;
     next: WasmImport;
@@ -304,20 +304,20 @@ class WasmImport {
 class WasmModule {
     firstImport: WasmImport;
     lastImport: WasmImport;
-    importCount: int;
+    importCount: int32;
 
     firstFunction: WasmFunction;
     lastFunction: WasmFunction;
-    functionCount: int;
+    functionCount: int32;
 
     firstSignature: WasmSignature;
     lastSignature: WasmSignature;
-    signatureCount: int;
+    signatureCount: int32;
 
     memoryInitializer: ByteArray;
-    currentHeapPointer: int;
-    originalHeapPointer: int;
-    mallocFunctionIndex: int;
+    currentHeapPointer: int32;
+    originalHeapPointer: int32;
+    mallocFunctionIndex: int32;
     context: CheckContext;
 
     growMemoryInitializer(): void {
@@ -331,7 +331,7 @@ class WasmModule {
         }
     }
 
-    allocateImport(signatureIndex: int, mod: string, name: string): WasmImport {
+    allocateImport(signatureIndex: int32, mod: string, name: string): WasmImport {
         var result = new WasmImport();
         result.signatureIndex = signatureIndex;
         result.module = mod;
@@ -345,7 +345,7 @@ class WasmModule {
         return result;
     }
 
-    allocateFunction(symbol: Symbol, signatureIndex: int): WasmFunction {
+    allocateFunction(symbol: Symbol, signatureIndex: int32): WasmFunction {
         var fn = new WasmFunction();
         fn.symbol = symbol;
         fn.signatureIndex = signatureIndex;
@@ -358,7 +358,7 @@ class WasmModule {
         return fn;
     }
 
-    allocateSignature(argumentTypes: WasmWrappedType, returnType: WasmWrappedType): int {
+    allocateSignature(argumentTypes: WasmWrappedType, returnType: WasmWrappedType): int32 {
         assert(returnType != null);
         assert(returnType.next == null);
 
@@ -397,7 +397,8 @@ class WasmModule {
         this.emitMemory(array);
         this.emitGlobalDeclarations(array);
         this.emitExportTable(array);
-        this.emitStartFunctionDeclaration(array);
+        //FIXME Get proper start function index
+        //this.emitStartFunctionDeclaration(array, start_fun_index);
         this.emitElements(array);
         this.emitFunctionBodies(array);
         this.emitDataSegments(array);
@@ -422,13 +423,13 @@ class WasmModule {
             wasmWriteVarUnsigned(array, count); //param_count, the number of parameters to the function
             type = signature.argumentTypes;
             while (type != null) {
-                wasmWriteVarUnsigned(array, type.id as int); //value_type, the parameter types of the function
+                wasmWriteVarUnsigned(array, type.id as int32); //value_type, the parameter types of the function
                 type = type.next;
             }
             var returnTypeId = signature.returnType.id;
             if (returnTypeId > 0) {
                 wasmWriteVarUnsigned(array, 1); //return_count, the number of results from the function
-                wasmWriteVarUnsigned(array, signature.returnType.id as int);
+                wasmWriteVarUnsigned(array, signature.returnType.id as int32);
             } else {
                 wasmWriteVarUnsigned(array, 0);
             }
@@ -526,8 +527,10 @@ class WasmModule {
         wasmFinishSection(array, section);
     }
 
-    emitStartFunctionDeclaration(array: ByteArray): void {
-        //TODO
+    emitStartFunctionDeclaration(array: ByteArray, startIndex: int32): void {
+        var section = wasmStartSection(array, WasmSection.Start, "start_function");
+        wasmWriteVarUnsigned(array, startIndex);
+        wasmFinishSection(array, section);
     }
 
     emitElements(array: ByteArray): void {
@@ -742,7 +745,7 @@ class WasmModule {
         this.emitNode(array, node.binaryRight());
     }
 
-    emitLoadFromMemory(array: ByteArray, type: Type, relativeBase: Node, offset: int): void {
+    emitLoadFromMemory(array: ByteArray, type: Type, relativeBase: Node, offset: int32): void {
         var sizeOf = type.variableSizeOf(this.context);
 
         if (sizeOf == 1) {
@@ -778,7 +781,7 @@ class WasmModule {
         }
     }
 
-    emitStoreToMemory(array: ByteArray, type: Type, relativeBase: Node, offset: int, value: Node): void {
+    emitStoreToMemory(array: ByteArray, type: Type, relativeBase: Node, offset: int32, value: Node): void {
         var sizeOf = type.variableSizeOf(this.context);
 
         if (sizeOf == 1) {
@@ -816,7 +819,7 @@ class WasmModule {
         this.emitNode(array, value);
     }
 
-    emitNode(array: ByteArray, node: Node): int {
+    emitNode(array: ByteArray, node: Node): int32 {
         assert(!isExpression(node) || node.resolvedType != null);
 
         if (node.kind == NodeKind.BLOCK) {
@@ -981,7 +984,7 @@ class WasmModule {
             wasmWriteVarSigned(array, 0);
         }
 
-        else if (node.kind == NodeKind.INT || node.kind == NodeKind.BOOL) {
+        else if (node.kind == NodeKind.INT32 || node.kind == NodeKind.BOOL) {
             array.append(WASM_OPCODE_I32_CONST);
             wasmWriteVarSigned(array, node.intValue);
         }
@@ -1078,7 +1081,7 @@ class WasmModule {
                     array.append(WASM_OPCODE_I32_AND);
                     this.emitNode(array, value);
                     array.append(WASM_OPCODE_I32_CONST);
-                    wasmWriteVarSigned(array, type.integerBitMask(this.context) as int);
+                    wasmWriteVarSigned(array, type.integerBitMask(this.context) as int32);
                 }
 
                 // No cast needed
@@ -1164,7 +1167,7 @@ class WasmModule {
                     var size = left.resolvedType.pointerTo.allocationSizeOf(this.context);
 
                     if (size == 2) {
-                        if (right.kind == NodeKind.INT) {
+                        if (right.kind == NodeKind.INT32) {
                             array.append(WASM_OPCODE_I32_CONST);
                             wasmWriteVarSigned(array, right.intValue << 1);
                         }
@@ -1178,7 +1181,7 @@ class WasmModule {
                     }
 
                     else if (size == 4) {
-                        if (right.kind == NodeKind.INT) {
+                        if (right.kind == NodeKind.INT32) {
                             array.append(WASM_OPCODE_I32_CONST);
                             wasmWriteVarSigned(array, right.intValue << 2);
                         }
@@ -1225,7 +1228,7 @@ class WasmModule {
     getWasmType(type: Type): WasmType {
         var context = this.context;
 
-        if (type == context.boolType || type.isInteger() || type.isReference()) {
+        if (type == context.boolType || type.isInteger() || type.isFloat() || type.isReference()) {
             return WasmType.I32;
         }
 
@@ -1238,9 +1241,9 @@ class WasmModule {
     }
 }
 
-function wasmPatchVarUnsigned(array: ByteArray, offset: int, value: int, maxValue: int): void {
-    var current = value as uint;
-    var max = maxValue as uint;
+function wasmPatchVarUnsigned(array: ByteArray, offset: int32, value: int32, maxValue: int32): void {
+    var current = value as uint32;
+    var max = maxValue as uint32;
     while (true) {
         var element = current & 127;
         current = current >> 7;
@@ -1256,8 +1259,8 @@ function wasmPatchVarUnsigned(array: ByteArray, offset: int, value: int, maxValu
     }
 }
 
-function wasmWriteVarUnsigned(array: ByteArray, value: int): void {
-    var current = value as uint;
+function wasmWriteVarUnsigned(array: ByteArray, value: int32): void {
+    var current = value as uint32;
     while (true) {
         var element = current & 127;
         current = current >> 7;
@@ -1271,7 +1274,7 @@ function wasmWriteVarUnsigned(array: ByteArray, value: int): void {
     }
 }
 
-function wasmWriteVarSigned(array: ByteArray, value: int): void {
+function wasmWriteVarSigned(array: ByteArray, value: int32): void {
     while (true) {
         var element = value & 127;
         value = value >> 7;
@@ -1300,7 +1303,7 @@ function wasmWriteLengthPrefixedASCII(array: ByteArray, value: string): void {
     }
 }
 
-function wasmStartSection(array: ByteArray, id: int, name: string): int {
+function wasmStartSection(array: ByteArray, id: int32, name: string): int32 {
     var offset = array.length();
     wasmWriteVarUnsigned(array, id);//section code
     wasmWriteVarUnsigned(array, ~0);//size of this section in bytes, will be filled in later
@@ -1310,7 +1313,7 @@ function wasmStartSection(array: ByteArray, id: int, name: string): int {
     return offset;
 }
 
-function wasmFinishSection(array: ByteArray, offset: int): void {
+function wasmFinishSection(array: ByteArray, offset: int32): void {
     wasmPatchVarUnsigned(array, offset + 1, array.length() - offset - 6, ~0);
 }
 
@@ -1322,8 +1325,8 @@ function wasmWrapType(id: WasmType): WasmWrappedType {
 }
 
 class WasmSharedOffset {
-    nextLocalOffset: int;
-    intLocalCount: int;
+    nextLocalOffset: int32;
+    intLocalCount: int32;
 }
 
 function wasmAssignLocalVariableOffsets(node: Node, shared: WasmSharedOffset): void {

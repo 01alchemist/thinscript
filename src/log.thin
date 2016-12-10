@@ -1,6 +1,6 @@
 class LineColumn {
-  line: int; // 0-based
-  column: int; // 0-based
+  line: int32; // 0-based
+  column: int32; // 0-based
 }
 
 class Source {
@@ -13,7 +13,7 @@ class Source {
   firstToken: Token;
   file: Node;
 
-  indexToLineColumn(index: int): LineColumn {
+  indexToLineColumn(index: int32): LineColumn {
     var contents = this.contents;
     var column = 0;
     var line = 0;
@@ -45,8 +45,8 @@ class Source {
 
 class Range {
   source: Source;
-  start: int;
-  end: int;
+  start: int32;
+  end: int32;
 
   toString(): string {
     return this.source.contents.slice(this.start, this.end);
@@ -81,7 +81,7 @@ class Range {
   }
 }
 
-function createRange(source: Source, start: int, end: int): Range {
+function createRange(source: Source, start: int32, end: int32): Range {
   assert(start <= end);
   var range = new Range();
   range.source = source;

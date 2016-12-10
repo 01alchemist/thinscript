@@ -1,26 +1,30 @@
 class CheckContext {
   log: Log;
   target: CompileTarget;
-  pointerByteSize: int;
+  pointerByteSize: int32;
   isUnsafeAllowed: bool;
   enclosingClass: Symbol;
   currentReturnType: Type;
-  nextGlobalVariableOffset: int;
+  nextGlobalVariableOffset: int32;
 
   // Native types
   boolType: Type;
   sbyteType: Type;
   errorType: Type;
-  intType: Type;
+  int32Type: Type;
+  int64Type: Type;
+  float32Type: Type;
+  float64Type: Type;
   nullType: Type;
   shortType: Type;
   stringType: Type;
   byteType: Type;
-  uintType: Type;
+  uint32Type: Type;
+  uint64Type: Type;
   ushortType: Type;
   voidType: Type;
 
-  allocateGlobalVariableOffset(sizeOf: int, alignmentOf: int): int {
+  allocateGlobalVariableOffset(sizeOf: int32, alignmentOf: int32): int32 {
     var offset = alignToNextMultipleOf(this.nextGlobalVariableOffset, alignmentOf);
     this.nextGlobalVariableOffset = offset + sizeOf;
     return offset;
@@ -167,25 +171,32 @@ function initialize(context: CheckContext, node: Node, parentScope: Scope, mode:
   if (kind == NodeKind.FILE && mode == CheckMode.INITIALIZE) {
     context.boolType = parentScope.findLocal("bool", ScopeHint.NORMAL).resolvedType;
     context.byteType = parentScope.findLocal("byte", ScopeHint.NORMAL).resolvedType;
-    context.intType = parentScope.findLocal("int", ScopeHint.NORMAL).resolvedType;
+    context.int32Type = parentScope.findLocal("int32", ScopeHint.NORMAL).resolvedType;
+    // context.int64Type = parentScope.findLocal("int64", ScopeHint.NORMAL).resolvedType;
     context.sbyteType = parentScope.findLocal("sbyte", ScopeHint.NORMAL).resolvedType;
     context.shortType = parentScope.findLocal("short", ScopeHint.NORMAL).resolvedType;
     context.stringType = parentScope.findLocal("string", ScopeHint.NORMAL).resolvedType;
-    context.uintType = parentScope.findLocal("uint", ScopeHint.NORMAL).resolvedType;
+    context.uint32Type = parentScope.findLocal("uint32", ScopeHint.NORMAL).resolvedType;
+    // context.uint64Type = parentScope.findLocal("uint64", ScopeHint.NORMAL).resolvedType;
     context.ushortType = parentScope.findLocal("ushort", ScopeHint.NORMAL).resolvedType;
+
+    context.float32Type = parentScope.findLocal("float32", ScopeHint.NORMAL).resolvedType;
 
     prepareNativeType(context.boolType, 1, 0);
     prepareNativeType(context.byteType, 1, SYMBOL_FLAG_NATIVE_INTEGER | SYMBOL_FLAG_IS_UNSIGNED);
-    prepareNativeType(context.intType, 4, SYMBOL_FLAG_NATIVE_INTEGER);
+    prepareNativeType(context.int32Type, 4, SYMBOL_FLAG_NATIVE_INTEGER);
+    // prepareNativeType(context.int64Type, 8, SYMBOL_FLAG_NATIVE_INTEGER);
     prepareNativeType(context.sbyteType, 1, SYMBOL_FLAG_NATIVE_INTEGER);
     prepareNativeType(context.shortType, 2, SYMBOL_FLAG_NATIVE_INTEGER);
     prepareNativeType(context.stringType, 4, SYMBOL_FLAG_IS_REFERENCE);
-    prepareNativeType(context.uintType, 4, SYMBOL_FLAG_NATIVE_INTEGER | SYMBOL_FLAG_IS_UNSIGNED);
+    prepareNativeType(context.uint32Type, 4, SYMBOL_FLAG_NATIVE_INTEGER | SYMBOL_FLAG_IS_UNSIGNED);
     prepareNativeType(context.ushortType, 2, SYMBOL_FLAG_NATIVE_INTEGER | SYMBOL_FLAG_IS_UNSIGNED);
+
+    prepareNativeType(context.float32Type, 4, SYMBOL_FLAG_NATIVE_FLOAT);
   }
 }
 
-function prepareNativeType(type: Type, byteSizeAndMaxAlignment: int, flags: int): void {
+function prepareNativeType(type: Type, byteSizeAndMaxAlignment: int32, flags: int32): void {
   var symbol = type.symbol;
   symbol.kind = SymbolKind.TYPE_NATIVE;
   symbol.byteSize = byteSizeAndMaxAlignment;
@@ -193,7 +204,7 @@ function prepareNativeType(type: Type, byteSizeAndMaxAlignment: int, flags: int)
   symbol.flags = flags;
 }
 
-function forbidFlag(context: CheckContext, node: Node, flag: int, text: string): void {
+function forbidFlag(context: CheckContext, node: Node, flag: int32, text: string): void {
   if ((node.flags & flag) != 0) {
     var range = rangeForFlag(node.firstFlag, flag);
 
@@ -204,7 +215,7 @@ function forbidFlag(context: CheckContext, node: Node, flag: int, text: string):
   }
 }
 
-function requireFlag(context: CheckContext, node: Node, flag: int, text: string): void {
+function requireFlag(context: CheckContext, node: Node, flag: int32, text: string): void {
   if ((node.flags & flag) == 0) {
     node.flags = node.flags | flag;
     context.log.error(node.range, text);
@@ -441,7 +452,7 @@ function initializeSymbol(context: CheckContext, symbol: Symbol): void {
         resolveAsExpression(context, value, symbol.scope);
         checkConversion(context, value, symbol.resolvedTypeUnderlyingIfEnumValue(context), ConversionKind.IMPLICIT);
 
-        if (value.kind == NodeKind.INT || value.kind == NodeKind.BOOL) {
+        if (value.kind == NodeKind.INT32 || value.kind == NodeKind.BOOL) {
           symbol.offset = value.intValue;
         }
 
@@ -574,16 +585,39 @@ function canConvert(context: CheckContext, node: Node, to: Type, kind: Conversio
   else if (from.isInteger() && to.isInteger()) {
     var mask = to.integerBitMask(context);
 
-    // Allow implicit conversions between enums and int
+    // Allow implicit conversions between enums and int32
     if (from.isEnum() && to == from.underlyingType(context)) {
       return true;
     }
 
     // Only allow lossless conversions implicitly
     if (kind == ConversionKind.EXPLICIT || from.symbol.byteSize < to.symbol.byteSize ||
-        node.kind == NodeKind.INT && (to.isUnsigned()
-          ? node.intValue >= 0 && node.intValue as uint <= mask
-          : node.intValue >= (~mask as int >> 1) && node.intValue <= (mask >> 1) as int)) {
+        node.kind == NodeKind.INT32 && (to.isUnsigned()
+          ? node.intValue >= 0 && node.intValue as uint32 <= mask
+          : node.intValue >= (~mask as int32 >> 1) && node.intValue <= (mask >> 1) as int32)) {
+      return true;
+    }
+  }
+
+  // Check float to integer conversions
+  else if (to.isInteger() && from.isFloat()) {
+      return true;
+  }
+  else if (from.isFloat() && to.isInteger()) {
+      return true;
+      //FIXME This is a copy of integer to integer conversion check
+    var mask = to.integerBitMask(context);
+
+    // Allow implicit conversions between enums and int32
+    if (from.isEnum() && to == from.underlyingType(context)) {
+      return true;
+    }
+
+    // Only allow lossless conversions implicitly
+    if (kind == ConversionKind.EXPLICIT || from.symbol.byteSize < to.symbol.byteSize ||
+        node.kind == NodeKind.INT32 && (to.isUnsigned()
+          ? node.intValue >= 0 && node.intValue as uint32 <= mask
+          : node.intValue >= (~mask as int32 >> 1) && node.intValue <= (mask >> 1) as int32)) {
       return true;
     }
   }
@@ -619,6 +653,10 @@ function createDefaultValueForType(context: CheckContext, type: Type): Node {
     return createInt(0);
   }
 
+  if (type.isFloat()) {
+    return createInt(0);
+  }
+
   if (type == context.boolType) {
     return createBool(false);
   }
@@ -634,7 +672,7 @@ function simplifyBinary(node: Node): void {
   // Canonicalize commutative operators
   if ((node.kind == NodeKind.ADD || node.kind == NodeKind.MULTIPLY ||
       node.kind == NodeKind.BITWISE_AND || node.kind == NodeKind.BITWISE_OR || node.kind == NodeKind.BITWISE_XOR) &&
-      left.kind == NodeKind.INT && right.kind != NodeKind.INT) {
+      left.kind == NodeKind.INT32 && right.kind != NodeKind.INT32) {
     node.appendChild(left.remove());
     left = node.binaryLeft();
     right = node.binaryRight();
@@ -642,7 +680,7 @@ function simplifyBinary(node: Node): void {
 
   // Convert multiplication or division by a power of 2 into a shift
   if ((node.kind == NodeKind.MULTIPLY || (node.kind == NodeKind.DIVIDE || node.kind == NodeKind.REMAINDER) && node.resolvedType.isUnsigned()) &&
-      right.kind == NodeKind.INT && isPositivePowerOf2(right.intValue)) {
+      right.kind == NodeKind.INT32 && isPositivePowerOf2(right.intValue)) {
     // Extract the shift from the value
     var shift = -1;
     var value = right.intValue;
@@ -803,7 +841,7 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
       checkConversion(context, value, symbol.resolvedTypeUnderlyingIfEnumValue(context), ConversionKind.IMPLICIT);
 
       // Variable initializers must be compile-time constants
-      if (symbol.kind == SymbolKind.VARIABLE_GLOBAL && value.kind != NodeKind.INT && value.kind != NodeKind.BOOL && value.kind != NodeKind.NULL) {
+      if (symbol.kind == SymbolKind.VARIABLE_GLOBAL && value.kind != NodeKind.INT32 && value.kind != NodeKind.BOOL && value.kind != NodeKind.NULL) {
         context.log.error(value.range, "Global initializers must be compile-time constants");
       }
     }
@@ -848,9 +886,9 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
     resolveChildren(context, node, parentScope);
   }
 
-  else if (kind == NodeKind.INT) {
+  else if (kind == NodeKind.INT32) {
     // Use the positive flag to differentiate between -2147483648 and 2147483648
-    node.resolvedType = node.intValue < 0 && !node.isPositive() ? context.uintType : context.intType;
+    node.resolvedType = node.intValue < 0 && !node.isPositive() ? context.uint32Type : context.int32Type;
   }
 
   else if (kind == NodeKind.STRING) {
@@ -898,7 +936,7 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
   else if (kind == NodeKind.ALIGN_OF) {
     var type = node.alignOfType();
     resolveAsType(context, type, parentScope);
-    node.resolvedType = context.intType;
+    node.resolvedType = context.int32Type;
 
     if (type.resolvedType != context.errorType) {
       node.becomeIntegerConstant(type.resolvedType.allocationAlignmentOf(context));
@@ -908,7 +946,7 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
   else if (kind == NodeKind.SIZE_OF) {
     var type = node.sizeOfType();
     resolveAsType(context, type, parentScope);
-    node.resolvedType = context.intType;
+    node.resolvedType = context.int32Type;
 
     if (type.resolvedType != context.errorType) {
       node.becomeIntegerConstant(type.resolvedType.allocationSizeOf(context));
@@ -948,7 +986,7 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
       }
 
       // People may try to use types from TypeScript
-      else if (name == "number") builder.append(", did you mean 'int'?");
+      else if (name == "number") builder.append(", did you mean 'int32'?");
       else if (name == "boolean") builder.append(", did you mean 'bool'?");
 
       context.log.error(node.range, builder.finish());
@@ -988,11 +1026,11 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
     node.resolvedType = castedType;
 
     // Automatically fold constants
-    if (value.kind == NodeKind.INT && castedType.isInteger()) {
+    if (value.kind == NodeKind.INT32 && castedType.isInteger()) {
       var result = value.intValue;
       var shift = 32 - castedType.integerBitCount(context);
       node.becomeIntegerConstant(castedType.isUnsigned()
-        ? castedType.integerBitMask(context) as int & result
+        ? castedType.integerBitMask(context) as int32 & result
         : result << shift >> shift);
     }
   }
@@ -1364,13 +1402,13 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
     else if (value.resolvedType.isInteger()) {
       if (value.resolvedType.isUnsigned()) {
         node.flags = node.flags | NODE_FLAG_UNSIGNED_OPERATOR;
-        node.resolvedType = context.uintType;
+        node.resolvedType = context.uint32Type;
       } else {
-        node.resolvedType = context.intType;
+        node.resolvedType = context.int32Type;
       }
 
       // Automatically fold constants
-      if (value.kind == NodeKind.INT) {
+      if (value.kind == NodeKind.INT32) {
         var input = value.intValue;
         var output = input;
         if (kind == NodeKind.COMPLEMENT) output = ~input;
@@ -1458,7 +1496,7 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
           kind == NodeKind.SHIFT_LEFT ||
           kind == NodeKind.SHIFT_RIGHT) {
         var isUnsigned = binaryHasUnsignedArguments(node);
-        var commonType = isUnsigned ? context.uintType : context.intType;
+        var commonType = isUnsigned ? context.uint32Type : context.int32Type;
         if (isUnsigned) {
           node.flags = node.flags | NODE_FLAG_UNSIGNED_OPERATOR;
         }
@@ -1467,7 +1505,7 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
         node.resolvedType = commonType;
 
         // Automatically fold constants
-        if (left.kind == NodeKind.INT && right.kind == NodeKind.INT) {
+        if (left.kind == NodeKind.INT32 && right.kind == NodeKind.INT32) {
           var inputLeft = left.intValue;
           var inputRight = right.intValue;
           var output = 0;
@@ -1479,7 +1517,7 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
           else if (kind == NodeKind.MULTIPLY) output = inputLeft * inputRight;
           else if (kind == NodeKind.REMAINDER) output = inputLeft % inputRight;
           else if (kind == NodeKind.SHIFT_LEFT) output = inputLeft << inputRight;
-          else if (kind == NodeKind.SHIFT_RIGHT) output = isUnsigned ? ((inputLeft as uint) >> (inputRight as uint)) as int : inputLeft >> inputRight;
+          else if (kind == NodeKind.SHIFT_RIGHT) output = isUnsigned ? ((inputLeft as uint32) >> (inputRight as uint32)) as int32 : inputLeft >> inputRight;
           else if (kind == NodeKind.SUBTRACT) output = inputLeft - inputRight;
           else return;
           node.becomeIntegerConstant(output);
@@ -1497,10 +1535,10 @@ function resolve(context: CheckContext, node: Node, parentScope: Scope): void {
           kind == NodeKind.GREATER_THAN ||
           kind == NodeKind.GREATER_THAN_EQUAL) {
         var expectedType =
-          binaryHasUnsignedArguments(node) ? context.uintType :
-          context.intType;
+          binaryHasUnsignedArguments(node) ? context.uint32Type :
+          context.int32Type;
 
-        if (expectedType == context.uintType) {
+        if (expectedType == context.uint32Type) {
           node.flags = node.flags | NODE_FLAG_UNSIGNED_OPERATOR;
         }
 

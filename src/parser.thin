@@ -125,7 +125,7 @@ class ParserContext {
     this.advance();
 
     // Reduce the precedence for right-associative operators
-    var precedence = isRightAssociative(operatorPrecedence) ? (operatorPrecedence as int - 1) as Precedence : operatorPrecedence;
+    var precedence = isRightAssociative(operatorPrecedence) ? (operatorPrecedence as int32 - 1) as Precedence : operatorPrecedence;
     var right = this.parseExpression(precedence, ParseKind.EXPRESSION);
 
     if (right == null) {
@@ -231,7 +231,7 @@ class ParserContext {
         return createString(text).withRange(token.range);
       }
 
-      if (this.peek(TokenKind.INT)) {
+      if (this.peek(TokenKind.INT32)) {
         var value = createInt(0);
         if (!this.parseInt(token.range, value)) {
           value = createParseError();
@@ -1126,7 +1126,7 @@ class ParserContext {
 
     while (true) {
       var token = this.current;
-      var flag: int;
+      var flag: int32;
 
       if (this.eat(TokenKind.DECLARE)) flag = NODE_FLAG_DECLARE;
       else if (this.eat(TokenKind.EXPORT)) flag = NODE_FLAG_EXPORT;
@@ -1212,8 +1212,8 @@ class ParserContext {
     var contents = source.contents;
     var i = range.start;
     var limit = range.end;
-    var value: uint = 0;
-    var base: uint = 10;
+    var value: uint32 = 0;
+    var base: uint32 = 10;
 
     // Handle binary, octal, and hexadecimal prefixes
     if (contents[i] == '0' && i + 1 < limit) {
@@ -1234,11 +1234,11 @@ class ParserContext {
         c >= 'A' && c <= 'F' ? c + (10 - 'A') :
         c >= 'a' && c <= 'f' ? c + (10 - 'a') :
         c - '0'
-      ) as uint;
+      ) as uint32;
       var baseValue = value * base;
 
       // Check for overflow (unsigned integer overflow supposedly doesn't result in undefined behavior)
-      if (baseValue / base != value || baseValue > ~0 as uint - digit) {
+      if (baseValue / base != value || baseValue > ~0 as uint32 - digit) {
         this.log.error(range, "Integer literal is too big to fit in 32 bits");
         return false;
       }
@@ -1247,7 +1247,7 @@ class ParserContext {
       i = i + 1;
     }
 
-    node.intValue = value as int;
+    node.intValue = value as int32;
     node.flags = NODE_FLAG_POSITIVE;
     return true;
   }

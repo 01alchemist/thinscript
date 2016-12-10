@@ -1,35 +1,46 @@
-function ByteArray_set16(array: ByteArray, index: int, value: int): void {
+function ByteArray_set16(array: ByteArray, index: int32, value: int32): void {
   array.set(index, value as byte);
   array.set(index + 1, (value >> 8) as byte);
 }
 
-function ByteArray_set32(array: ByteArray, index: int, value: int): void {
+function ByteArray_set32(array: ByteArray, index: int32, value: int32): void {
   array.set(index, value as byte);
   array.set(index + 1, (value >> 8) as byte);
   array.set(index + 2, (value >> 16) as byte);
   array.set(index + 3, (value >> 24) as byte);
 }
 
-function ByteArray_append32(array: ByteArray, value: int): void {
+function ByteArray_append32(array: ByteArray, value: int32): void {
   array.append(value as byte);
   array.append((value >> 8) as byte);
   array.append((value >> 16) as byte);
   array.append((value >> 24) as byte);
 }
 
+// function ByteArray_append64(array: ByteArray, value: int64): void {
+//   array.append(value as byte);
+//   array.append((value >> 8) as byte);
+//   array.append((value >> 16) as byte);
+//   array.append((value >> 24) as byte);
+//   array.append((value >> 32) as byte);
+//   array.append((value >> 40) as byte);
+//   array.append((value >> 48) as byte);
+//   array.append((value >> 56) as byte);
+// }
+
 #if JS ////////////////////////////////////////////////////////////////////////////////
 
-  declare function Uint8Array_new(length: int): Uint8Array;
+  declare function Uint8Array_new(length: int32): Uint8Array;
 
   declare class Uint8Array {
-    length: int;
+    length: int32;
     set(source: Uint8Array): void;
-    subarray(start: int, end: int): Uint8Array;
-    operator [] (index: int): byte;
-    operator []= (index: int, value: byte): void;
+    subarray(start: int32, end: int32): Uint8Array;
+    operator [] (index: int32): byte;
+    operator []= (index: int32, value: byte): void;
   }
 
-  function ByteArray_setString(array: ByteArray, index: int, text: string): void {
+  function ByteArray_setString(array: ByteArray, index: int32, text: string): void {
     var length = text.length;
     assert(index >= 0 && index + length * 2 <= array.length());
     var data = array._data;
@@ -45,9 +56,9 @@ function ByteArray_append32(array: ByteArray, value: int): void {
 
   extern class ByteArray {
     _data: Uint8Array;
-    _length: int;
+    _length: int32;
 
-    length(): int {
+    length(): int32 {
       return this._length;
     }
 
@@ -55,13 +66,13 @@ function ByteArray_append32(array: ByteArray, value: int): void {
       this._length = 0;
     }
 
-    get(index: int): byte {
-      assert((index as uint) < (this._length as uint));
+    get(index: int32): byte {
+      assert((index as uint32) < (this._length as uint32));
       return this._data[index];
     }
 
-    set(index: int, value: byte): void {
-      assert((index as uint) < (this._length as uint));
+    set(index: int32, value: byte): void {
+      assert((index as uint32) < (this._length as uint32));
       this._data[index] = value;
     }
 
@@ -71,7 +82,7 @@ function ByteArray_append32(array: ByteArray, value: int): void {
       this._data[index] = value;
     }
 
-    resize(length: int): void {
+    resize(length: int32): void {
       if (length > (this._data != null ? this._data.length : 0)) {
         var capacity = length * 2;
         var data = Uint8Array_new(capacity);
@@ -86,21 +97,21 @@ function ByteArray_append32(array: ByteArray, value: int): void {
 
 #elif WASM || C ////////////////////////////////////////////////////////////////////////////////
 
-  function ByteArray_setString(array: ByteArray, index: int, text: string): void {
+  function ByteArray_setString(array: ByteArray, index: int32, text: string): void {
     var length = text.length;
     unsafe {
       assert(index >= 0 && index + length * 2 <= array.length());
-      memcpy(array._data + index, text as *byte + 4, length as uint * 2);
+      memcpy(array._data + index, text as *byte + 4, length as uint32 * 2);
     }
   }
 
   extern class ByteArray {
     _data: *byte;
-    _length: uint;
-    _capacity: uint;
+    _length: uint32;
+    _capacity: uint32;
 
-    length(): int {
-      return this._length as int;
+    length(): int32 {
+      return this._length as int32;
     }
 
     unsafe bytes(): *byte {
@@ -111,15 +122,15 @@ function ByteArray_append32(array: ByteArray, value: int): void {
       this._length = 0;
     }
 
-    get(index: int): byte {
-      assert((index as uint) < this._length);
+    get(index: int32): byte {
+      assert((index as uint32) < this._length);
       unsafe {
         return *(this._data + index);
       }
     }
 
-    set(index: int, value: byte): void {
-      assert((index as uint) < this._length);
+    set(index: int32, value: byte): void {
+      assert((index as uint32) < this._length);
       unsafe {
         *(this._data + index) = value;
       }
@@ -128,15 +139,15 @@ function ByteArray_append32(array: ByteArray, value: int): void {
     append(value: byte): void {
       var offset = this._length;
       unsafe {
-        this.resize(offset as int + 1);
+        this.resize(offset as int32 + 1);
         *(this._data + offset) = value;
       }
     }
 
-    resize(length: int): void {
-      if (length as uint > this._capacity) {
+    resize(length: int32): void {
+      if (length as uint32 > this._capacity) {
         unsafe {
-          var capacity = length as uint * 2;
+          var capacity = length as uint32 * 2;
           var data = malloc(capacity);
           memcpy(data, this._data, this._length);
           this._capacity = capacity;
@@ -144,21 +155,21 @@ function ByteArray_append32(array: ByteArray, value: int): void {
         }
       }
 
-      this._length = length as uint;
+      this._length = length as uint32;
     }
   }
 
 #else ////////////////////////////////////////////////////////////////////////////////
 
-  declare function ByteArray_setString(array: ByteArray, index: int, text: string): void;
+  declare function ByteArray_setString(array: ByteArray, index: int32, text: string): void;
 
   declare class ByteArray {
-    length(): int;
+    length(): int32;
     clear(): void;
-    get(index: int): byte;
-    set(index: int, value: byte): void;
+    get(index: int32): byte;
+    set(index: int32, value: byte): void;
     append(value: byte): void;
-    resize(length: int): void;
+    resize(length: int32): void;
   }
 
 #endif

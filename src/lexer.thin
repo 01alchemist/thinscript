@@ -4,7 +4,10 @@ enum TokenKind {
   // Literals
   CHARACTER,
   IDENTIFIER,
-  INT,
+  INT32,
+  INT64,
+  FLOAT32,
+  FLOAT64,
   STRING,
 
   // Punctuation
@@ -122,7 +125,10 @@ function tokenToString(token: TokenKind): string {
   // Literals
   if (token == TokenKind.CHARACTER) return "character literal";
   if (token == TokenKind.IDENTIFIER) return "identifier";
-  if (token == TokenKind.INT) return "integer literal";
+  if (token == TokenKind.INT32) return "integer32 literal";
+  if (token == TokenKind.INT64) return "integer64 literal";
+  if (token == TokenKind.FLOAT32) return "float32 literal";
+  if (token == TokenKind.FLOAT64) return "float64 literal";
   if (token == TokenKind.STRING) return "string literal";
 
   // Punctuation
@@ -335,7 +341,7 @@ function tokenize(source: Source, log: Log): Token {
 
     // Integer
     else if (isNumber(c)) {
-      kind = TokenKind.INT;
+      kind = TokenKind.INT32;
 
       if (i < limit) {
         var next = contents[i];
